@@ -1,0 +1,84 @@
+import React from 'react';
+import MultipleChoice from './MultipleChoice';
+import SingleChoice from './SingleChoice';
+import TrueFalseNG from './TrueFalseNG';
+import MatchingFeatures from './MatchingFeatures';
+import Completion from './Completion';
+import ShortAnswer from './ShortAnswer';
+import DiagramLabel from './DiagramLabel';
+import type { BaseQuestion } from './types';
+
+interface Props {
+  question: BaseQuestion;
+  onAnswer: (answer: any) => void;
+  currentAnswer: any;
+}
+
+const QuestionRenderer: React.FC<Props> = ({ question, onAnswer, currentAnswer }) => {
+  switch (question.type) {
+    case 'MULTIPLE_CHOICE':
+      return (
+        <MultipleChoice
+          question={question}
+          onAnswer={onAnswer}
+          selectedAnswers={currentAnswer || []}
+        />
+      );
+    case 'SINGLE_CHOICE':
+      return (
+        <SingleChoice
+          question={question}
+          onAnswer={onAnswer}
+          selectedAnswer={currentAnswer}
+        />
+      );
+    case 'T_F_NG':
+      return (
+        <TrueFalseNG
+          question={question}
+          onAnswer={onAnswer}
+          selectedAnswer={currentAnswer}
+        />
+      );
+    case 'MATCHING_FEATURES':
+      return (
+        <MatchingFeatures
+          question={question}
+          onAnswer={onAnswer}
+          selectedMatches={currentAnswer || {}}
+        />
+      );
+    case 'SENTENCE_COMPLETION':
+    case 'NOTE_COMPLETION':
+    case 'LISTENING_NOTE_COMPLETION':
+    case 'TABLE_COMPLETION':
+    case 'FLOW_COMPLETION':
+      return (
+        <Completion
+          question={question}
+          onAnswer={onAnswer}
+          answers={currentAnswer || []}
+        />
+      );
+    case 'SHORT_ANSWER':
+      return (
+        <ShortAnswer
+          question={question}
+          onAnswer={onAnswer}
+          answer={currentAnswer || ''}
+        />
+      );
+    case 'DIAGRAM_LABEL_COMPLETION':
+      return (
+        <DiagramLabel
+          question={question}
+          onAnswer={onAnswer}
+          answers={currentAnswer || {}}
+        />
+      );
+    default:
+      return <div>Unsupported question type</div>;
+  }
+};
+
+export default QuestionRenderer;
