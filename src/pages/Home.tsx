@@ -5,20 +5,37 @@ import { useInView } from 'react-intersection-observer';
 import { GraduationCap, Users } from 'lucide-react';
 import LoadingState from '../components/LoadingState';
 import TestCard from '../components/TestCard';
-import { sampleTests } from '../data/sampleTests';
 import type { Test } from '../types/test';
 
-const fetchTests = async ({ pageParam = 1 }): Promise<{ tests: Test[]; nextPage: number | null }> => {
-  await new Promise(resolve => setTimeout(resolve, 1000));
+
+const fetchTests = async ({ pageParam=1 }): Promise<{ tests: Test[]; nextPage: number | null }> => {
+
+  const host = import.meta.env.VITE_API_HOST;
   const pageSize = 12;
   const start = (pageParam - 1) * pageSize;
-  const end = start + pageSize;
-  const tests = sampleTests.slice(start, end).filter(test => test.type === 'General');
   
-  return {
-    tests,
-    nextPage: end < sampleTests.length ? pageParam + 1 : null
-  };
+  try {
+    const response = await fetch(`${host}/ielts/?skip=${start}&limit=${pageSize}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch tests');
+    }
+    
+    const tests = await response.json();
+    
+    return {
+      tests: tests.filter((test: Test) => test.test_type == 'GENERAL'),
+      nextPage: tests.length === pageSize ? pageParam + 1 : null
+    };
+  } catch (error) {
+    console.error('Error fetching tests:', error);
+    throw error;
+  }
 };
 
 function Home() {
@@ -32,6 +49,7 @@ function Home() {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
+    initialPageParam:1,
     queryKey: ['tests'],
     queryFn: fetchTests,
     getNextPageParam: (lastPage) => lastPage.nextPage,

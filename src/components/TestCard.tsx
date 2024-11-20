@@ -8,8 +8,8 @@ interface TestCardProps {
 }
 
 const TestCard: React.FC<TestCardProps> = ({ test, onClick }) => {
-  const getTypeColor = (type: Test['type']) => {
-    return type === 'Academic' 
+  const getTypeColor = (type: Test['test_type']) => {
+    return type === 'ACADEMIC' 
       ? 'bg-blue-100 text-blue-800'
       : 'bg-purple-100 text-purple-800';
   };
@@ -21,24 +21,24 @@ const TestCard: React.FC<TestCardProps> = ({ test, onClick }) => {
     >
       <div className="p-4">
         <div className="flex items-center gap-2 mb-3">
-          <h3 className="text-lg font-semibold text-gray-900">{test.title}</h3>
-          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getTypeColor(test.type)}`}>
-            {test.type}
-          </span>
+          <h3 className="text-lg font-semibold text-gray-900">{test.test_name}</h3>
+          {/* <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getTypeColor(test.test_type)}`}>
+            {test.test_type}
+          </span> */}
         </div>
 
         <div className="flex items-center justify-between text-sm text-gray-500">
           <div className="flex items-center gap-1">
             <Clock className="w-4 h-4" />
-            <span>{test.duration}m</span>
+            <span>170m</span>
           </div>
-          <span className={`px-2 py-0.5 rounded-full text-xs ${
+          {/* <span className={`px-2 py-0.5 rounded-full text-xs ${
             test.difficulty === 'Easy' ? 'bg-green-100 text-green-800' :
             test.difficulty === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
             'bg-red-100 text-red-800'
           }`}>
             {test.difficulty}
-          </span>
+          </span> */}
         </div>
       </div>
     </div>
