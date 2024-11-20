@@ -4,25 +4,55 @@ import TestLayout from '../components/TestLayout';
 
 const WritingTest = () => {
   const [currentTask, setCurrentTask] = useState(1);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
 
   const tasks = [
     {
       task: 1,
       title: 'Task 1 - Report Writing',
-      description: 'Write a report of at least 150 words describing visual information (graph, table, chart, or diagram).',
+      description: 'Write a report of at least 150 words describing the visual information below.',
+      prompt: `The graph below shows the number of international students enrolled in different programs at a university over a five-year period.
+
+Write a report describing the main trends and any significant differences in the data.
+
+Key points to include:
+- Overall trends
+- Notable changes
+- Comparisons between programs
+- Any significant peaks or troughs`,
       timeLimit: 20,
       wordCount: 150,
     },
     {
       task: 2,
       title: 'Task 2 - Essay Writing',
-      description: 'Write an essay of at least 250 words in response to a point of view, argument, or problem.',
+      description: 'Write an essay of at least 250 words in response to the prompt below.',
+      prompt: `Some people believe that universities should focus more on practical skills that prepare students for specific careers, while others think universities should provide a broad education in many subjects.
+
+Discuss both views and give your opinion.
+
+Consider:
+- The purpose of university education
+- Benefits of specialized vs. broad education
+- Current job market demands
+- Long-term career flexibility`,
       timeLimit: 40,
       wordCount: 250,
     },
   ];
 
   const currentTaskData = tasks[currentTask - 1];
+
+  const handleAnswerChange = (taskId: number, value: string) => {
+    setAnswers(prev => ({
+      ...prev,
+      [`task${taskId}`]: value
+    }));
+  };
+
+  const wordCount = (text: string) => {
+    return text.trim().split(/\s+/).filter(Boolean).length;
+  };
 
   return (
     <TestLayout
@@ -43,11 +73,30 @@ const WritingTest = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <textarea
-            className="w-full h-64 p-4 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="Start writing here..."
-          />
+        <div className="grid grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-xl shadow-sm">
+            <div className="prose max-w-none">
+              <h4 className="text-lg font-semibold mb-4">Writing Prompt</h4>
+              <div className="whitespace-pre-line">{currentTaskData.prompt}</div>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-sm">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-lg font-semibold">Your Response</h4>
+                <span className="text-sm text-gray-500">
+                  Words: {wordCount(answers[`task${currentTask}`] || '')} / {currentTaskData.wordCount}
+                </span>
+              </div>
+              <textarea
+                value={answers[`task${currentTask}`] || ''}
+                onChange={(e) => handleAnswerChange(currentTask, e.target.value)}
+                className="w-full h-[calc(100vh-400px)] p-4 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-mono"
+                placeholder="Start writing here..."
+              />
+            </div>
+          </div>
         </div>
 
         <div className="flex justify-between mt-6">

@@ -7,6 +7,7 @@ interface TestSectionProps {
   duration: string;
   description: string;
   isActive?: boolean;
+  isDisabled?: boolean;
   onClick: () => void;
 }
 
@@ -16,15 +17,18 @@ const TestSection: React.FC<TestSectionProps> = ({
   duration,
   description,
   isActive = false,
+  isDisabled = false,
   onClick,
 }) => {
   return (
     <div
-      onClick={onClick}
-      className={`p-6 rounded-xl transition-all cursor-pointer ${
-        isActive
-          ? 'bg-indigo-600 text-white shadow-lg scale-105'
-          : 'bg-white hover:bg-indigo-50'
+      onClick={isDisabled ? undefined : onClick}
+      className={`p-6 rounded-xl transition-all ${
+        isDisabled
+          ? 'bg-gray-100 opacity-50 cursor-not-allowed'
+          : isActive
+          ? 'bg-indigo-600 text-white shadow-lg scale-105 cursor-pointer'
+          : 'bg-white hover:bg-indigo-50 cursor-pointer'
       }`}
     >
       <div className="flex items-center justify-between mb-4">

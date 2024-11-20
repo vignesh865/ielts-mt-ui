@@ -13,7 +13,11 @@ const ReadingTest = () => {
       part: 1,
       title: 'Academic Reading Passage 1',
       description: 'A complex text on an academic topic.',
-      text: `The human brain is perhaps the most complex structure known to mankind. Its intricate network of neurons, synapses, and neural pathways continues to fascinate scientists and researchers worldwide. Recent studies have shown that the brain's plasticity—its ability to form and reorganize synaptic connections—remains active throughout life, contrary to earlier beliefs that brain development stopped in childhood.`,
+      text: `The human brain is perhaps the most complex structure known to mankind. Its intricate network of neurons, synapses, and neural pathways continues to fascinate scientists and researchers worldwide. Recent studies have shown that the brain's plasticity—its ability to form and reorganize synaptic connections—remains active throughout life, contrary to earlier beliefs that brain development stopped in childhood.
+
+      Research has demonstrated that learning new skills, engaging in physical exercise, and maintaining social connections can all contribute to enhanced brain plasticity. This understanding has led to revolutionary approaches in rehabilitation for patients with brain injuries and new strategies for maintaining cognitive health as we age.
+
+      Moreover, advances in neuroimaging technologies have allowed scientists to observe the brain in action, revealing how different regions work together in complex cognitive tasks. This has provided unprecedented insights into memory formation, decision-making processes, and emotional responses.`,
       questions: [
         {
           id: 'r1q1',
@@ -40,15 +44,18 @@ const ReadingTest = () => {
           features: [],
           statements: ['Neurons', 'Synapses', 'Neural pathways'],
           matches: ['Communication points', 'Brain cells', 'Connection routes']
-        },
-        // Add more questions to total 13
+        }
       ]
     },
     {
       part: 2,
       title: 'Academic Reading Passage 2',
       description: 'An academic article or research paper excerpt.',
-      text: `Climate change represents one of the most significant challenges facing our planet today. The increasing concentration of greenhouse gases in the atmosphere has led to rising global temperatures, affecting ecosystems worldwide. Scientists have observed dramatic changes in weather patterns, sea levels, and biodiversity.`,
+      text: `Climate change represents one of the most significant challenges facing our planet today. The increasing concentration of greenhouse gases in the atmosphere has led to rising global temperatures, affecting ecosystems worldwide. Scientists have observed dramatic changes in weather patterns, sea levels, and biodiversity.
+
+      The impact of climate change extends beyond environmental concerns. Economic systems, agriculture, and human health are all vulnerable to these changes. Coastal communities face increased risks from rising sea levels, while agricultural regions must adapt to shifting weather patterns and growing seasons.
+
+      International cooperation and immediate action are essential to address this global crisis. While renewable energy technologies and sustainable practices offer promising solutions, implementation requires significant political will and public support.`,
       questions: [
         {
           id: 'r2q1',
@@ -67,15 +74,18 @@ const ReadingTest = () => {
           type: 'SHORT_ANSWER',
           question: 'List two effects of climate change mentioned in the passage.',
           maxWords: 20
-        },
-        // Add more questions to total 13
+        }
       ]
     },
     {
       part: 3,
       title: 'Academic Reading Passage 3',
       description: 'A detailed academic text with complex arguments.',
-      text: `Artificial Intelligence has revolutionized numerous industries, from healthcare to transportation. Machine learning algorithms can now process vast amounts of data to identify patterns and make predictions with unprecedented accuracy. However, ethical concerns about AI decision-making and privacy remain significant challenges.`,
+      text: `Artificial Intelligence has revolutionized numerous industries, from healthcare to transportation. Machine learning algorithms can now process vast amounts of data to identify patterns and make predictions with unprecedented accuracy. However, ethical concerns about AI decision-making and privacy remain significant challenges.
+
+      The healthcare sector has seen particularly dramatic improvements through AI implementation. From diagnostic assistance to drug discovery, AI systems are accelerating medical research and improving patient care. Yet, questions about data privacy and the reliability of AI-driven decisions persist.
+
+      As AI technology continues to evolve, the need for robust regulatory frameworks and ethical guidelines becomes increasingly apparent. Balancing innovation with responsible development remains a key challenge for the field.`,
       questions: [
         {
           id: 'r3q1',
@@ -95,8 +105,7 @@ const ReadingTest = () => {
             { id: 'd', text: 'Technical limitations' }
           ],
           correctAnswer: 'c'
-        },
-        // Add more questions to total 14
+        }
       ]
     }
   ];
@@ -129,23 +138,28 @@ const ReadingTest = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <div className="prose max-w-none mb-8">
-            <h4 className="text-lg font-semibold mb-4">Reading Passage</h4>
-            <p>{currentPartData.text}</p>
-          </div>
-        </div>
-
-        <div className="space-y-8">
-          {currentPartData.questions.map((question: BaseQuestion) => (
-            <div key={question.id} className="bg-white p-6 rounded-xl shadow-sm">
-              <QuestionRenderer
-                question={question}
-                onAnswer={(answer) => handleAnswer(question.id, answer)}
-                currentAnswer={answers[question.id]}
-              />
+        <div className="grid grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-xl shadow-sm">
+            <div className="prose max-w-none">
+              <h4 className="text-lg font-semibold mb-4">Reading Passage</h4>
+              <div className="whitespace-pre-line">{currentPartData.text}</div>
             </div>
-          ))}
+          </div>
+
+          <div className="space-y-6">
+            {currentPartData.questions.map((question: BaseQuestion, index) => (
+              <div key={question.id} className="bg-white p-6 rounded-xl shadow-sm">
+                <div className="mb-4 pb-4 border-b border-gray-200">
+                  <span className="text-sm font-medium text-gray-500">Question {index + 1}</span>
+                </div>
+                <QuestionRenderer
+                  question={question}
+                  onAnswer={(answer) => handleAnswer(question.id, answer)}
+                  currentAnswer={answers[question.id]}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="flex justify-between mt-6">
