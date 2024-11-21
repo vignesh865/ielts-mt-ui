@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import { tasks } from '../data/writingParts';
@@ -10,9 +10,9 @@ const WritingTest = () => {
   const currentTaskData = tasks[currentTask - 1];
 
   const handleAnswerChange = (taskId: number, value: string) => {
-    setAnswers(prev => ({
+    setAnswers((prev) => ({
       ...prev,
-      [`task${taskId}`]: value
+      [`task${taskId}`]: value,
     }));
   };
 
@@ -43,7 +43,9 @@ const WritingTest = () => {
           <div className="bg-white p-6 rounded-xl shadow-sm">
             <div className="prose max-w-none">
               <h4 className="text-lg font-semibold mb-4">Writing Prompt</h4>
-              <div className="whitespace-pre-line">{currentTaskData.prompt}</div>
+              <div className="whitespace-pre-line">
+                {currentTaskData.prompt}
+              </div>
             </div>
           </div>
 
@@ -52,12 +54,15 @@ const WritingTest = () => {
               <div className="flex items-center justify-between mb-2">
                 <h4 className="text-lg font-semibold">Your Response</h4>
                 <span className="text-sm text-gray-500">
-                  Words: {wordCount(answers[`task${currentTask}`] || '')} / {currentTaskData.wordCount}
+                  Words: {wordCount(answers[`task${currentTask}`] || '')} /{' '}
+                  {currentTaskData.wordCount}
                 </span>
               </div>
               <textarea
                 value={answers[`task${currentTask}`] || ''}
-                onChange={(e) => handleAnswerChange(currentTask, e.target.value)}
+                onChange={(e) =>
+                  handleAnswerChange(currentTask, e.target.value)
+                }
                 className="w-full h-[calc(100vh-400px)] p-4 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-mono"
                 placeholder="Start writing here..."
               />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import { parts } from '../data/speakingParts';

@@ -13,7 +13,7 @@ export const parts = [
         id: 'r1q1',
         type: 'T_F_NG',
         question: 'The human brain stops developing after childhood.',
-        correctAnswer: 'F'
+        correctAnswer: 'F',
       },
       {
         id: 'r1q2',
@@ -23,9 +23,9 @@ export const parts = [
           { id: 'a', text: 'Brain surgery techniques' },
           { id: 'b', text: 'Neural plasticity' },
           { id: 'c', text: 'Childhood development' },
-          { id: 'd', text: 'Scientific research methods' }
+          { id: 'd', text: 'Scientific research methods' },
         ],
-        correctAnswers: ['b']
+        correctAnswers: ['b'],
       },
       {
         id: 'r1q3',
@@ -33,9 +33,9 @@ export const parts = [
         question: 'Match the scientific terms with their descriptions.',
         features: [],
         statements: ['Neurons', 'Synapses', 'Neural pathways'],
-        matches: ['Communication points', 'Brain cells', 'Connection routes']
-      }
-    ]
+        matches: ['Communication points', 'Brain cells', 'Connection routes'],
+      },
+    ],
   },
   {
     part: 2,
@@ -56,16 +56,17 @@ export const parts = [
         choices: [
           { id: '1', text: 'greenhouse' },
           { id: '2', text: 'rising' },
-          { id: '3', text: 'ecosystems' }
-        ]
+          { id: '3', text: 'ecosystems' },
+        ],
       },
       {
         id: 'r2q2',
         type: 'SHORT_ANSWER',
-        question: 'List two effects of climate change mentioned in the passage.',
-        maxWords: 20
-      }
-    ]
+        question:
+          'List two effects of climate change mentioned in the passage.',
+        maxWords: 20,
+      },
+    ],
   },
   {
     part: 3,
@@ -82,7 +83,7 @@ export const parts = [
         type: 'TABLE_COMPLETION',
         question: 'Complete the table about AI applications.',
         text: 'Industry: _\nApplication: _\nBenefit: _\nChallenge: _',
-        blanks: 4
+        blanks: 4,
       },
       {
         id: 'r3q2',
@@ -92,10 +93,10 @@ export const parts = [
           { id: 'a', text: 'Processing speed' },
           { id: 'b', text: 'Cost of implementation' },
           { id: 'c', text: 'Ethical implications' },
-          { id: 'd', text: 'Technical limitations' }
+          { id: 'd', text: 'Technical limitations' },
         ],
-        correctAnswer: 'c'
-      }
-    ]
-  }
+        correctAnswer: 'c',
+      },
+    ],
+  },
 ];

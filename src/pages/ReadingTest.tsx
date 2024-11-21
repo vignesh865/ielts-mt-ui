@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import QuestionRenderer from '../components/questions/QuestionRenderer';
@@ -12,9 +12,9 @@ const ReadingTest = () => {
   const currentPartData = parts[currentPart - 1];
 
   const handleAnswer = (questionId: string, answer: any) => {
-    setAnswers(prev => ({
+    setAnswers((prev) => ({
       ...prev,
-      [questionId]: answer
+      [questionId]: answer,
     }));
   };
 
@@ -47,9 +47,14 @@ const ReadingTest = () => {
 
           <div className="space-y-6">
             {currentPartData.questions.map((question: BaseQuestion, index) => (
-              <div key={question.id} className="bg-white p-6 rounded-xl shadow-sm">
+              <div
+                key={question.id}
+                className="bg-white p-6 rounded-xl shadow-sm"
+              >
                 <div className="mb-4 pb-4 border-b border-gray-200">
-                  <span className="text-sm font-medium text-gray-500">Question {index + 1}</span>
+                  <span className="text-sm font-medium text-gray-500">
+                    Question {index + 1}
+                  </span>
                 </div>
                 <QuestionRenderer
                   question={question}

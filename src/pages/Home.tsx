@@ -7,30 +7,34 @@ import LoadingState from '../components/LoadingState';
 import TestCard from '../components/TestCard';
 import type { Test } from '../types/test';
 
-
-const fetchTests = async ({ pageParam=1 }): Promise<{ tests: Test[]; nextPage: number | null }> => {
-
+const fetchTests = async ({
+  pageParam = 1,
+}): Promise<{ tests: Test[]; nextPage: number | null }> => {
   const host = import.meta.env.VITE_API_HOST;
   const pageSize = 12;
   const start = (pageParam - 1) * pageSize;
-  
+
   try {
-    const response = await fetch(`${host}/ielts/?skip=${start}&limit=${pageSize}`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await fetch(
+      `${host}/ielts/?skip=${start}&limit=${pageSize}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'anyvalue',
+        },
+      }
+    );
     if (!response.ok) {
       throw new Error('Failed to fetch tests');
     }
-    
+
     const tests = await response.json();
-    
+
     return {
       tests: tests.filter((test: Test) => test.test_type == 'GENERAL'),
-      nextPage: tests.length === pageSize ? pageParam + 1 : null
+      nextPage: tests.length === pageSize ? pageParam + 1 : null,
     };
   } catch (error) {
     console.error('Error fetching tests:', error);
@@ -42,18 +46,13 @@ function Home() {
   const navigate = useNavigate();
   const { ref, inView } = useInView();
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery({
-    initialPageParam:1,
-    queryKey: ['tests'],
-    queryFn: fetchTests,
-    getNextPageParam: (lastPage) => lastPage.nextPage,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
+    useInfiniteQuery({
+      initialPageParam: 1,
+      queryKey: ['tests'],
+      queryFn: fetchTests,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+    });
 
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -77,8 +76,12 @@ function Home() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Unable to Load Tests</h2>
-          <p className="text-red-500 mb-4">There was an error loading the test list. Please try again.</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Unable to Load Tests
+          </h2>
+          <p className="text-red-500 mb-4">
+            There was an error loading the test list. Please try again.
+          </p>
           <button
             onClick={() => window.location.reload()}
             className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
@@ -90,7 +93,7 @@ function Home() {
     );
   }
 
-  const allTests = data?.pages.flatMap(page => page.tests) ?? [];
+  const allTests = data?.pages.flatMap((page) => page.tests) ?? [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
@@ -106,7 +109,9 @@ function Home() {
               IELTS Practice Tests
             </h1>
             <p className="mt-6 text-xl max-w-3xl mx-auto">
-              Prepare for your IELTS exam with our comprehensive practice tests covering all four sections: Listening, Reading, Writing, and Speaking.
+              Prepare for your IELTS exam with our comprehensive practice tests
+              covering all four sections: Listening, Reading, Writing, and
+              Speaking.
             </p>
           </div>
         </div>
@@ -120,10 +125,14 @@ function Home() {
                 <div className="p-3 bg-indigo-100 rounded-lg">
                   <Users className="w-6 h-6 text-indigo-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">General Training</h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  General Training
+                </h2>
               </div>
               <p className="text-gray-600 mb-6">
-                Practice tests designed for those seeking to demonstrate English language proficiency for work, training programs, or migration purposes.
+                Practice tests designed for those seeking to demonstrate English
+                language proficiency for work, training programs, or migration
+                purposes.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {allTests.map((test) => (
@@ -144,12 +153,11 @@ function Home() {
                 <h2 className="text-2xl font-bold text-gray-900">Academic</h2>
               </div>
               <p className="text-gray-600 mb-6">
-                Comprehensive practice tests for students planning to study at undergraduate or postgraduate levels.
+                Comprehensive practice tests for students planning to study at
+                undergraduate or postgraduate levels.
               </p>
               <div className="flex items-center justify-center h-48 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-                <p className="text-gray-500 text-center">
-                  Coming Soon
-                </p>
+                <p className="text-gray-500 text-center">Coming Soon</p>
               </div>
             </div>
           </div>
