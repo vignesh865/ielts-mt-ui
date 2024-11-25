@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import { tasks } from '../data/writingParts';
+import { useLocation } from 'react-router-dom';
 
 const WritingTest = () => {
   const [currentTask, setCurrentTask] = useState(1);
+  const location = useLocation();
+  const sectionData = location.state?.sectionData;
+  
   const [answers, setAnswers] = useState<Record<string, string>>({});
 
   const currentTaskData = tasks[currentTask - 1];
@@ -44,7 +48,7 @@ const WritingTest = () => {
             <div className="prose max-w-none">
               <h4 className="text-lg font-semibold mb-4">Writing Prompt</h4>
               <div className="whitespace-pre-line">
-                {currentTaskData.prompt}
+                {sectionData[`part${currentTask}`]?.data[1].question}
               </div>
             </div>
           </div>

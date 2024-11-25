@@ -1,8 +1,8 @@
 export const parts = [
   {
     part: 1,
-    title: 'Academic Reading Passage 1',
-    description: 'A complex text on an academic topic.',
+    title: 'Reading Passage 1',
+    description: 'You should spend about 20 minutes on Questions 1–13, which are based on Reading Passage 1',
     text: `The human brain is perhaps the most complex structure known to mankind. Its intricate network of neurons, synapses, and neural pathways continues to fascinate scientists and researchers worldwide. Recent studies have shown that the brain's plasticity—its ability to form and reorganize synaptic connections—remains active throughout life, contrary to earlier beliefs that brain development stopped in childhood.
 
     Research has demonstrated that learning new skills, engaging in physical exercise, and maintaining social connections can all contribute to enhanced brain plasticity. This understanding has led to revolutionary approaches in rehabilitation for patients with brain injuries and new strategies for maintaining cognitive health as we age.
@@ -39,8 +39,8 @@ export const parts = [
   },
   {
     part: 2,
-    title: 'Academic Reading Passage 2',
-    description: 'An academic article or research paper excerpt.',
+    title: 'Reading Passage 2',
+    description: 'You should spend about 20 minutes on Questions 1–13, which are based on Reading Passage 2',
     text: `Climate change represents one of the most significant challenges facing our planet today. The increasing concentration of greenhouse gases in the atmosphere has led to rising global temperatures, affecting ecosystems worldwide. Scientists have observed dramatic changes in weather patterns, sea levels, and biodiversity.
 
     The impact of climate change extends beyond environmental concerns. Economic systems, agriculture, and human health are all vulnerable to these changes. Coastal communities face increased risks from rising sea levels, while agricultural regions must adapt to shifting weather patterns and growing seasons.
@@ -70,8 +70,8 @@ export const parts = [
   },
   {
     part: 3,
-    title: 'Academic Reading Passage 3',
-    description: 'A detailed academic text with complex arguments.',
+    title: 'Reading Passage 3',
+    description: 'You should spend about 20 minutes on Questions 1–14, which are based on Reading Passage 3',
     text: `Artificial Intelligence has revolutionized numerous industries, from healthcare to transportation. Machine learning algorithms can now process vast amounts of data to identify patterns and make predictions with unprecedented accuracy. However, ethical concerns about AI decision-making and privacy remain significant challenges.
 
     The healthcare sector has seen particularly dramatic improvements through AI implementation. From diagnostic assistance to drug discovery, AI systems are accelerating medical research and improving patient care. Yet, questions about data privacy and the reliability of AI-driven decisions persist.

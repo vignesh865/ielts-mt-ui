@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import { parts } from '../data/speakingParts';
+import { useLocation } from 'react-router-dom';
 
 const SpeakingTest = () => {
   const [currentPart, setCurrentPart] = useState(1);
-
+  const location = useLocation();
+  const sectionData = location.state?.sectionData;
+  
   const currentPartData = parts[currentPart - 1];
 
   return (

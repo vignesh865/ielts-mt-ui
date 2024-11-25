@@ -11,7 +11,7 @@ const fetchTests = async ({
   pageParam = 1,
 }): Promise<{ tests: Test[]; nextPage: number | null }> => {
   const host = import.meta.env.VITE_API_HOST;
-  const pageSize = 12;
+  const pageSize = 20;
   const start = (pageParam - 1) * pageSize;
 
   try {

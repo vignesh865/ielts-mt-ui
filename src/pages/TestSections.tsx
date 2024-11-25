@@ -82,10 +82,14 @@ function TestSections() {
     }
   }, [testId]);
 
-  const handleSectionClick = (sectionId: string) => {
+  const handleSectionClick = (sectionId: string, testDetails: any) => {
     if (!completedSections.includes(sectionId)) {
       setActiveSection(sectionId);
-      navigate(`/test/${testId}/${sectionId}`);
+      navigate(`/test/${testId}/${sectionId}`, {
+        state: {
+          sectionData: testDetails[sectionId],
+        },
+      });
     }
   };
 
@@ -156,7 +160,7 @@ function TestSections() {
                 description={section.description}
                 isActive={activeSection === section.id}
                 isDisabled={!section.enabled || completedSections.includes(section.id)}
-                onClick={() => handleSectionClick(section.id)}
+                onClick={() => handleSectionClick(section.id, testDetails)}
               />
             ))}
           </div>

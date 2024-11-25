@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import QuestionRenderer from '../components/questions/QuestionRenderer';
 import type { BaseQuestion } from '../components/questions/types';
 import { parts } from '../data/listeningParts';
+import { useLocation } from 'react-router-dom';
+
 
 const ListeningTest = () => {
   const [currentPart, setCurrentPart] = useState(1);
+  const location = useLocation();
+  const sectionData = location.state?.sectionData;
+  
   const [answers, setAnswers] = useState<Record<string, any>>({});
 
-  const currentPartData = parts[currentPart - 1];
+  const currentPartData =  sectionData[`part${currentPart}`];
 
   const handleAnswer = (questionId: string, answer: any) => {
     setAnswers((prev) => ({
@@ -32,7 +37,7 @@ const ListeningTest = () => {
           <h3 className="text-xl font-bold mb-2">{currentPartData.title}</h3>
           <p className="text-gray-600 mb-4">{currentPartData.description}</p>
           <div className="flex items-center justify-between text-sm text-gray-500">
-            <span>Questions: {currentPartData.questions.length}</span>
+            <span>Questions: {currentPartData.questions}</span>
             <span>Time: {Math.round(30 / 4)} minutes</span>
           </div>
         </div>

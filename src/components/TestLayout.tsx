@@ -70,30 +70,6 @@ const TestLayout: React.FC<TestLayoutProps> = ({
 
           {children}
 
-          {/* <div className="flex justify-between mt-6">
-            <button
-              onClick={onBack}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
-            >
-              <ArrowLeft className="w-4 h-4" /> Previous
-            </button>
-            {isLastPart ? (
-              <button
-                onClick={handleSubmit}
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-              >
-                Submit Section
-              </button>
-            ) : (
-              <button
-                onClick={onNext}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
-              >
-                Next
-              </button>
-            )}
-          </div> */}
-
           {showSubmitModal && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
               <div className="bg-white p-8 rounded-xl shadow-lg">

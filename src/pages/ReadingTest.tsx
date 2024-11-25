@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import QuestionRenderer from '../components/questions/QuestionRenderer';
 import type { BaseQuestion } from '../components/questions/types';
 import { parts } from '../data/readingParts';
+import { useLocation } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm'
 
 const ReadingTest = () => {
   const [currentPart, setCurrentPart] = useState(1);
+  const location = useLocation();
+  const sectionData = location.state?.sectionData;
+  
   const [answers, setAnswers] = useState<Record<string, any>>({});
 
-  const currentPartData = parts[currentPart - 1];
+  // const currentPartData = parts[currentPart - 1];
+  const currentPartData = sectionData[`part${currentPart}`];
 
   const handleAnswer = (questionId: string, answer: any) => {
     setAnswers((prev) => ({
@@ -32,8 +39,7 @@ const ReadingTest = () => {
           <h3 className="text-xl font-bold mb-2">{currentPartData.title}</h3>
           <p className="text-gray-600 mb-4">{currentPartData.description}</p>
           <div className="flex items-center justify-between text-sm text-gray-500">
-            <span>Questions: {currentPartData.questions.length}</span>
-            <span>Time: 20 minutes</span>
+            <span>Questions: {currentPartData.questions}</span>
           </div>
         </div>
 
@@ -41,7 +47,9 @@ const ReadingTest = () => {
           <div className="bg-white p-6 rounded-xl shadow-sm">
             <div className="prose max-w-none">
               <h4 className="text-lg font-semibold mb-4">Reading Passage</h4>
-              <div className="whitespace-pre-line">{currentPartData.text}</div>
+              <ReactMarkdown className="whitespace-pre-line"
+               children={currentPartData?.passage?.text || ''}
+               remarkPlugins={[remarkGfm]}/> 
             </div>
           </div>
 
