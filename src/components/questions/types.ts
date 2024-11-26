@@ -3,28 +3,55 @@ export type Choice = {
   text: string;
 };
 
-export type BaseQuestion = {
-  id: string;
-  type: string;
-  question: string;
-  marks?: number;
-};
+export type BaseQuestion = [string, any];
+
 
 export type MultipleChoiceQuestion = BaseQuestion & {
   type: 'MULTIPLE_CHOICE';
-  choices: Choice[];
-  correctAnswers: string[];
+  id: string;
+  question_with_options: MultipleChoiceQuestionWithOptions
+};
+
+export type MultipleChoiceQuestionWithOptions = BaseQuestion & {
+  correct_answers: string[];
+  question: string;
+  wrong_answers: string[];
+};
+
+
+export type SingleChoiceSubQuestion = {
+  question: string;
+  correct_answer: string;
+  wrong_answers: string[];
 };
 
 export type SingleChoiceQuestion = BaseQuestion & {
   type: 'SINGLE_CHOICE';
-  choices: Choice[];
-  correctAnswer: string;
+  id: string;
+  questions: SingleChoiceSubQuestion[];
+};
+
+export type TFNGStatement = {
+  statement: string;
+  answer: 'True' | 'False' | 'Not Given';
 };
 
 export type TrueFalseQuestion = BaseQuestion & {
   type: 'T_F_NG';
-  correctAnswer: 'T' | 'F' | 'NG';
+  id: string;
+  statements: TFNGStatement[];
+};
+
+export type ShortAnswerSubQuestion = {
+  question: string;
+  answer: string;
+};
+
+export type ShortAnswerQuestion = BaseQuestion & {
+  type: 'SHORT_ANSWER';
+  question_id: string;
+  questions: ShortAnswerSubQuestion[];
+  maxWords?: number;
 };
 
 export type MatchingFeature = {
@@ -45,11 +72,6 @@ export type CompletionQuestion = BaseQuestion & {
   text: string;
   blanks: number;
   choices?: Choice[];
-};
-
-export type ShortAnswerQuestion = BaseQuestion & {
-  type: 'SHORT_ANSWER';
-  maxWords?: number;
 };
 
 export type DiagramLabelQuestion = BaseQuestion & {

@@ -9,13 +9,14 @@ import DiagramLabel from './DiagramLabel';
 import type { BaseQuestion } from './types';
 
 interface Props {
+  question_type: string;
   question: BaseQuestion;
   onAnswer: (answer: any) => void;
   currentAnswer: any;
 }
 
-const QuestionRenderer: React.FC<Props> = ({ question, onAnswer, currentAnswer }) => {
-  switch (question.type) {
+const QuestionRenderer: React.FC<Props> = ({question_type, question, onAnswer, currentAnswer }) => {
+  switch (question_type) {
     case 'MULTIPLE_CHOICE':
       return (
         <MultipleChoice
@@ -29,7 +30,7 @@ const QuestionRenderer: React.FC<Props> = ({ question, onAnswer, currentAnswer }
         <SingleChoice
           question={question}
           onAnswer={onAnswer}
-          selectedAnswer={currentAnswer}
+          selectedAnswers={currentAnswer || {}}
         />
       );
     case 'T_F_NG':
@@ -37,7 +38,7 @@ const QuestionRenderer: React.FC<Props> = ({ question, onAnswer, currentAnswer }
         <TrueFalseNG
           question={question}
           onAnswer={onAnswer}
-          selectedAnswer={currentAnswer}
+          selectedAnswers={currentAnswer || {}}
         />
       );
     case 'MATCHING_FEATURES':

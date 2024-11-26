@@ -3,7 +3,6 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import QuestionRenderer from '../components/questions/QuestionRenderer';
 import type { BaseQuestion } from '../components/questions/types';
-import { parts } from '../data/readingParts';
 import { useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'
@@ -15,13 +14,12 @@ const ReadingTest = () => {
   
   const [answers, setAnswers] = useState<Record<string, any>>({});
 
-  // const currentPartData = parts[currentPart - 1];
   const currentPartData = sectionData[`part${currentPart}`];
 
   const handleAnswer = (questionId: string, answer: any) => {
     setAnswers((prev) => ({
       ...prev,
-      [questionId]: answer,
+      [questionId]: answer.answers,
     }));
   };
 
@@ -39,7 +37,7 @@ const ReadingTest = () => {
           <h3 className="text-xl font-bold mb-2">{currentPartData.title}</h3>
           <p className="text-gray-600 mb-4">{currentPartData.description}</p>
           <div className="flex items-center justify-between text-sm text-gray-500">
-            <span>Questions: {currentPartData.questions}</span>
+            <span>Questions: {currentPartData.questions_count}</span>
           </div>
         </div>
 
@@ -54,9 +52,9 @@ const ReadingTest = () => {
           </div>
 
           <div className="space-y-6">
-            {currentPartData.questions.map((question: BaseQuestion, index) => (
+            {currentPartData.data.map((question: BaseQuestion, index: number) => (
               <div
-                key={question.id}
+                key={question[1].id}
                 className="bg-white p-6 rounded-xl shadow-sm"
               >
                 <div className="mb-4 pb-4 border-b border-gray-200">
@@ -65,9 +63,10 @@ const ReadingTest = () => {
                   </span>
                 </div>
                 <QuestionRenderer
-                  question={question}
-                  onAnswer={(answer) => handleAnswer(question.id, answer)}
-                  currentAnswer={answers[question.id]}
+                  question_type={question[0]}
+                  question={question[1]}
+                  onAnswer={(answer) => handleAnswer(answer.question_id, answer)}
+                  currentAnswer={answers[question[1].id]}
                 />
               </div>
             ))}
