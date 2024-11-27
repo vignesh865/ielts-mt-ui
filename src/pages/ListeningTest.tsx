@@ -3,7 +3,6 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import QuestionRenderer from '../components/questions/QuestionRenderer';
 import type { BaseQuestion } from '../components/questions/types';
-import { parts } from '../data/listeningParts';
 import { useLocation } from 'react-router-dom';
 
 
@@ -45,13 +44,14 @@ const ListeningTest = () => {
         <div className="space-y-8">
           {currentPartData.questions.map((question: BaseQuestion) => (
             <div
-              key={question.id}
+              key={question[1].id}
               className="bg-white p-6 rounded-xl shadow-sm"
             >
               <QuestionRenderer
+                question_type={question[0]}
                 question={question}
-                onAnswer={(answer) => handleAnswer(question.id, answer)}
-                currentAnswer={answers[question.id]}
+                onAnswer={(answer) => handleAnswer(question[1].id, answer)}
+                currentAnswer={answers[question[1].id]}
               />
             </div>
           ))}

@@ -5,11 +5,10 @@ export type Choice = {
 
 export type BaseQuestion = [string, any];
 
-
 export type MultipleChoiceQuestion = BaseQuestion & {
   type: 'MULTIPLE_CHOICE';
   id: string;
-  question_with_options: MultipleChoiceQuestionWithOptions
+  question_with_options: MultipleChoiceQuestionWithOptions;
 };
 
 export type MultipleChoiceQuestionWithOptions = BaseQuestion & {
@@ -17,7 +16,6 @@ export type MultipleChoiceQuestionWithOptions = BaseQuestion & {
   question: string;
   wrong_answers: string[];
 };
-
 
 export type SingleChoiceSubQuestion = {
   question: string;
@@ -42,33 +40,39 @@ export type TrueFalseQuestion = BaseQuestion & {
   statements: TFNGStatement[];
 };
 
-export type ShortAnswerSubQuestion = {
-  question: string;
-  answer: string;
-};
-
 export type ShortAnswerQuestion = BaseQuestion & {
   type: 'SHORT_ANSWER';
-  question_id: string;
-  questions: ShortAnswerSubQuestion[];
-  maxWords?: number;
+  id: string;
+  questions: {
+    question: string;
+    answer: string;
+  }[];
 };
 
-export type MatchingFeature = {
-  id: string;
+export type MatchingOption = {
+  index: number;
+  text: string;
+};
+
+export type MatchingStatement = {
+  index: number;
   statement: string;
-  match: string;
 };
 
 export type MatchingFeaturesQuestion = BaseQuestion & {
   type: 'MATCHING_FEATURES';
-  features: MatchingFeature[];
-  statements: string[];
-  matches: string[];
+  id: string;
+  options: MatchingOption[];
+  statements: MatchingStatement[];
 };
 
 export type CompletionQuestion = BaseQuestion & {
-  type: 'SENTENCE_COMPLETION' | 'NOTE_COMPLETION' | 'LISTENING_NOTE_COMPLETION' | 'TABLE_COMPLETION' | 'FLOW_COMPLETION';
+  type:
+    | 'SENTENCE_COMPLETION'
+    | 'NOTE_COMPLETION'
+    | 'LISTENING_NOTE_COMPLETION'
+    | 'TABLE_COMPLETION'
+    | 'FLOW_COMPLETION';
   text: string;
   blanks: number;
   choices?: Choice[];

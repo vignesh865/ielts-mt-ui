@@ -14,20 +14,23 @@ const ShortAnswer: React.FC<Props> = ({ question, onAnswer, answers }) => {
       [questionIndex]: value,
     };
     onAnswer({
-      question_id: question.question_id,
+      question_id: question.id,
       answers: newAnswers,
     });
   };
 
   return (
     <div className="space-y-8">
-      <div className="text-sm text-gray-500 text-right">
-        {question.maxWords ? `Maximum ${question.maxWords} words per answer` : 'Enter your answer'}
-      </div>
       {question.questions.map((subQuestion, questionIndex) => (
-        <div key={questionIndex} className="space-y-4 pb-6 border-b border-gray-200 last:border-0">
-          <p className="text-lg font-medium">
-            {questionIndex + 1}. {subQuestion.question}
+        <div
+          key={questionIndex}
+          className="space-y-4 pb-6 border-b border-gray-200 last:border-0"
+        >
+          <p className="text-lg">
+            <span className="font-medium text-gray-900">
+              {questionIndex + 1}.{' '}
+            </span>
+            {subQuestion.question}
           </p>
           <input
             type="text"

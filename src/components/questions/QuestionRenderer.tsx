@@ -46,7 +46,7 @@ const QuestionRenderer: React.FC<Props> = ({question_type, question, onAnswer, c
         <MatchingFeatures
           question={question}
           onAnswer={onAnswer}
-          selectedMatches={currentAnswer || {}}
+          selectedAnswers={currentAnswer || {}}
         />
       );
     case 'SENTENCE_COMPLETION':
@@ -66,7 +66,7 @@ const QuestionRenderer: React.FC<Props> = ({question_type, question, onAnswer, c
         <ShortAnswer
           question={question}
           onAnswer={onAnswer}
-          answer={currentAnswer || ''}
+          answers={currentAnswer || ''}
         />
       );
     case 'DIAGRAM_LABEL_COMPLETION':
