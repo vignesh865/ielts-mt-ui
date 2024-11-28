@@ -6,6 +6,8 @@ import MatchingFeatures from './MatchingFeatures';
 import Completion from './Completion';
 import ShortAnswer from './ShortAnswer';
 import DiagramLabel from './DiagramLabel';
+import FlowCompletion from './FlowCompletion';
+import SentenceCompletion from './SentenceCompletion';
 import type { BaseQuestion } from './types';
 
 interface Props {
@@ -15,7 +17,12 @@ interface Props {
   currentAnswer: any;
 }
 
-const QuestionRenderer: React.FC<Props> = ({question_type, question, onAnswer, currentAnswer }) => {
+const QuestionRenderer: React.FC<Props> = ({
+  question_type,
+  question,
+  onAnswer,
+  currentAnswer,
+}) => {
   switch (question_type) {
     case 'MULTIPLE_CHOICE':
       return (
@@ -49,13 +56,27 @@ const QuestionRenderer: React.FC<Props> = ({question_type, question, onAnswer, c
           selectedAnswers={currentAnswer || {}}
         />
       );
-    case 'SENTENCE_COMPLETION':
     case 'NOTE_COMPLETION':
     case 'LISTENING_NOTE_COMPLETION':
     case 'TABLE_COMPLETION':
-    case 'FLOW_COMPLETION':
       return (
         <Completion
+          question={question}
+          onAnswer={onAnswer}
+          answers={currentAnswer || []}
+        />
+      );
+    case 'SENTENCE_COMPLETION':
+      return (
+        <SentenceCompletion
+          question={question}
+          onAnswer={onAnswer}
+          answers={currentAnswer || []}
+        />
+      );
+    case 'FLOW_COMPLETION':
+      return (
+        <FlowCompletion
           question={question}
           onAnswer={onAnswer}
           answers={currentAnswer || []}
@@ -66,7 +87,7 @@ const QuestionRenderer: React.FC<Props> = ({question_type, question, onAnswer, c
         <ShortAnswer
           question={question}
           onAnswer={onAnswer}
-          answers={currentAnswer || ''}
+          answers={currentAnswer || {}}
         />
       );
     case 'DIAGRAM_LABEL_COMPLETION':

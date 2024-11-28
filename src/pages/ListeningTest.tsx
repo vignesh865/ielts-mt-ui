@@ -42,15 +42,15 @@ const ListeningTest = () => {
         </div>
 
         <div className="space-y-8">
-          {currentPartData.questions.map((question: BaseQuestion) => (
+          {currentPartData.data.map((question: BaseQuestion) => (
             <div
               key={question[1].id}
               className="bg-white p-6 rounded-xl shadow-sm"
             >
               <QuestionRenderer
                 question_type={question[0]}
-                question={question}
-                onAnswer={(answer) => handleAnswer(question[1].id, answer)}
+                question={question[1]}
+                onAnswer={(answer) => handleAnswer(answer.question_id, answer.answers)}
                 currentAnswer={answers[question[1].id]}
               />
             </div>

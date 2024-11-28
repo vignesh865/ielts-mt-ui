@@ -19,7 +19,7 @@ const ReadingTest = () => {
   const handleAnswer = (questionId: string, answer: any) => {
     setAnswers((prev) => ({
       ...prev,
-      [questionId]: answer.answers,
+      [questionId]: answer,
     }));
   };
 
@@ -65,7 +65,7 @@ const ReadingTest = () => {
                 <QuestionRenderer
                   question_type={question[0]}
                   question={question[1]}
-                  onAnswer={(answer) => handleAnswer(answer.question_id, answer)}
+                  onAnswer={(answer) => handleAnswer(answer.question_id, answer.answers)}
                   currentAnswer={answers[question[1].id]}
                 />
               </div>

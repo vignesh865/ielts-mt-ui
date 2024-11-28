@@ -67,15 +67,28 @@ export type MatchingFeaturesQuestion = BaseQuestion & {
 };
 
 export type CompletionQuestion = BaseQuestion & {
-  type:
-    | 'SENTENCE_COMPLETION'
-    | 'NOTE_COMPLETION'
-    | 'LISTENING_NOTE_COMPLETION'
-    | 'TABLE_COMPLETION'
-    | 'FLOW_COMPLETION';
+  type: 'NOTE_COMPLETION' | 'LISTENING_NOTE_COMPLETION' | 'TABLE_COMPLETION';
   text: string;
   blanks: number;
   choices?: Choice[];
+};
+
+export type SentenceCompletionQuestion = BaseQuestion & {
+  type: 'SENTENCE_COMPLETION';
+  id: string;
+  sentence_completion: {
+    sentences: string[];
+  };
+};
+
+export type FlowCompletionQuestion = BaseQuestion & {
+  type: 'FLOW_COMPLETION';
+  id: string;
+  flow_completion: {
+    steps: {
+      text: string;
+    }[];
+  };
 };
 
 export type DiagramLabelQuestion = BaseQuestion & {
