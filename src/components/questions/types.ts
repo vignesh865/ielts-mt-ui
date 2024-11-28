@@ -66,11 +66,30 @@ export type MatchingFeaturesQuestion = BaseQuestion & {
   statements: MatchingStatement[];
 };
 
-export type CompletionQuestion = BaseQuestion & {
-  type: 'NOTE_COMPLETION' | 'LISTENING_NOTE_COMPLETION' | 'TABLE_COMPLETION';
+export type TableCell = {
   text: string;
-  blanks: number;
-  choices?: Choice[];
+};
+
+export type TableRow = {
+  cells: TableCell[];
+};
+
+export type TableCompletionQuestion = BaseQuestion & {
+  type: 'TABLE_COMPLETION';
+  id: string;
+  table_completion: {
+    row_headers: string[];
+    column_headers: string[];
+    rows: TableRow[];
+  };
+};
+
+export type NoteCompletionQuestion = BaseQuestion & {
+  type: 'NOTE_COMPLETION' | 'LISTENING_NOTE_COMPLETION';
+  id: string;
+  note: {
+    blanked_note_text: string;
+  };
 };
 
 export type SentenceCompletionQuestion = BaseQuestion & {

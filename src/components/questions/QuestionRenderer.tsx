@@ -3,11 +3,12 @@ import MultipleChoice from './MultipleChoice';
 import SingleChoice from './SingleChoice';
 import TrueFalseNG from './TrueFalseNG';
 import MatchingFeatures from './MatchingFeatures';
-import Completion from './Completion';
+import NoteCompletion from './NoteCompletion';
 import ShortAnswer from './ShortAnswer';
 import DiagramLabel from './DiagramLabel';
 import FlowCompletion from './FlowCompletion';
 import SentenceCompletion from './SentenceCompletion';
+import TableCompletion from './TableCompletion';
 import type { BaseQuestion } from './types';
 
 interface Props {
@@ -58,9 +59,16 @@ const QuestionRenderer: React.FC<Props> = ({
       );
     case 'NOTE_COMPLETION':
     case 'LISTENING_NOTE_COMPLETION':
+      return (
+        <NoteCompletion
+          question={question}
+          onAnswer={onAnswer}
+          answers={currentAnswer || []}
+        />
+      );
     case 'TABLE_COMPLETION':
       return (
-        <Completion
+        <TableCompletion
           question={question}
           onAnswer={onAnswer}
           answers={currentAnswer || []}
