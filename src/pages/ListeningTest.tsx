@@ -36,8 +36,7 @@ const ListeningTest = () => {
           <h3 className="text-xl font-bold mb-2">{currentPartData.title}</h3>
           <p className="text-gray-600 mb-4">{currentPartData.description}</p>
           <div className="flex items-center justify-between text-sm text-gray-500">
-            <span>Questions: {currentPartData.questions}</span>
-            <span>Time: {Math.round(30 / 4)} minutes</span>
+            <span>Questions: {currentPartData.questions_count}</span>
           </div>
         </div>
 
