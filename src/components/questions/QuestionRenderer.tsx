@@ -16,6 +16,7 @@ interface Props {
   question: BaseQuestion;
   onAnswer: (answer: any) => void;
   currentAnswer: any;
+  isInstructionsGlowing?: boolean;
 }
 
 const QuestionRenderer: React.FC<Props> = ({
@@ -23,18 +24,24 @@ const QuestionRenderer: React.FC<Props> = ({
   question,
   onAnswer,
   currentAnswer,
+  isInstructionsGlowing = false,
 }) => {
   var instructions = question[1]?.instructions;
 
   const renderInstructions = () => {
-    
-    if (!instructions) {instructions =  "Answer the following questions";}
+    if (!instructions) {
+      instructions = 'Answer the following questions';
+    }
     return (
-      <div className="mb-8 bg-gradient-to-r from-indigo-50 to-purple-50 border-l-4 border-indigo-500">
+      <div className={`mb-8 bg-gradient-to-r from-indigo-50 to-purple-50 border-l-4 border-indigo-500 transition-all duration-300 ${
+        isInstructionsGlowing ? 'ring-2 ring-indigo-500 ring-opacity-50' : ''
+      }`}>
         <div className="px-6 py-4">
           <div className="flex items-center mb-2">
             <div className="w-2 h-2 bg-indigo-500 rounded-full mr-2"></div>
-            <h3 className="text-lg font-semibold text-indigo-900">Instructions</h3>
+            <h3 className="text-lg font-semibold text-indigo-900">
+              Instructions
+            </h3>
           </div>
           <p className="text-gray-800 leading-relaxed">{instructions}</p>
         </div>
