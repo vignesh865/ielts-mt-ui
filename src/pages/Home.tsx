@@ -16,7 +16,7 @@ const fetchTests = async ({
 
   try {
     const response = await fetch(
-      `${host}/ielts/?skip=${start}&limit=${pageSize}`,
+      `${host}/ielts/all?skip=${start}&limit=${pageSize}`,
       {
         method: 'GET',
         headers: {

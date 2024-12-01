@@ -22,6 +22,12 @@ const ListeningTest = () => {
   const currentPartData = sectionData[`part${currentPart}`];
   const currentAudioUrl = currentPartData?.audio?.[currentAudioIndex]?.download_url;
 
+  const [partTimeLeft, setPartTimeLeft] = useState<number>(15);
+  const [questionTimeLeft, setQuestionTimeLeft] = useState<number>(30);
+  
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout>();
+
   const handleAnswer = (questionId: string, answer: any) => {
     setAnswers((prev) => ({
       ...prev,
@@ -29,13 +35,22 @@ const ListeningTest = () => {
     }));
   };
 
+
   const startNextQuestionSequence = () => {
     if (currentQuestionIndex < currentPartData.data.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
       setIsQuestionGlowing(true);
+      setQuestionTimeLeft(30); // Reset timer for new question
+      
+      // Start new question timer
+      const questionInterval = setInterval(() => {
+        setQuestionTimeLeft((prev) => Math.max(0, prev - 1));
+      }, 1000);
+
       timeoutRef.current = setTimeout(() => {
         setIsQuestionGlowing(false);
         setShouldPlayAudio(true);
+        clearInterval(questionInterval);
       }, 30000);
     }
   };
@@ -56,30 +71,80 @@ const ListeningTest = () => {
       setShouldPlayAudio(false);
       setCurrentQuestionIndex(0);
       setCurrentAudioIndex(0);
+      setPartTimeLeft(15);
+      setQuestionTimeLeft(30);
+
+      let partInterval: NodeJS.Timeout;
+      let questionInterval: NodeJS.Timeout;
 
       // Start sequence
       setIsPartGlowing(true);
+      
+      // Part timer
+      partInterval = setInterval(() => {
+        setPartTimeLeft((prev) => Math.max(0, prev - 1));
+      }, 1000);
+
       timeoutRef.current = setTimeout(() => {
         setIsPartGlowing(false);
         setIsQuestionGlowing(true);
+        clearInterval(partInterval);
+        
+        // Question timer
+        questionInterval = setInterval(() => {
+          setQuestionTimeLeft((prev) => Math.max(0, prev - 1));
+        }, 1000);
+
         timeoutRef.current = setTimeout(() => {
           setIsQuestionGlowing(false);
           setShouldPlayAudio(true);
+          clearInterval(questionInterval);
         }, 30000);
       }, 15000);
-    }
 
+      return () => {
+        clearInterval(partInterval);
+        clearInterval(questionInterval);
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+      };
+    }
+  }, [currentPart]);
+
+  useEffect(() => {
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [currentPart]);
+  }, []);
 
-  const handlePartChange = (newPart: number) => {
+
+  const cleanupCurrentSequence = () => {
+    // Clear all timeouts
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
+    // Clear all intervals
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    // Stop audio if playing
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    // Reset states
+    setIsPartGlowing(false);
+    setIsQuestionGlowing(false);
+    setShouldPlayAudio(false);
+    setPartTimeLeft(15);
+    setQuestionTimeLeft(30);
+  };
+
+  const handlePartChange = (newPart: number) => {
+    cleanupCurrentSequence();
     setCurrentPart(newPart);
   };
 
@@ -99,9 +164,14 @@ const ListeningTest = () => {
           autoPlay={shouldPlayAudio}
         />
 
-        <div className={`bg-white p-6 rounded-xl shadow-sm transition-all duration-300 ${
-          isPartGlowing ? 'ring-2 ring-indigo-500 ring-opacity-50' : ''
-        }`}>
+<div className={`bg-white p-6 rounded-xl shadow-sm transition-all duration-300 relative ${
+      isPartGlowing ? 'ring-2 ring-indigo-500 ring-opacity-50' : ''
+    }`}>
+      {isPartGlowing && (
+        <div className="absolute top-2 right-2 text-sm text-gray-600">
+          Read {partTimeLeft}s
+        </div>
+      )}
           <h3 className="text-xl font-bold mb-2">{currentPartData.title}</h3>
           <p className="text-gray-600 mb-4">{currentPartData.description}</p>
           <div className="flex items-center justify-between text-sm text-gray-500">
@@ -124,6 +194,7 @@ const ListeningTest = () => {
                 }
                 currentAnswer={answers[question[1].id]}
                 isInstructionsGlowing={isQuestionGlowing && index === currentQuestionIndex}
+                timeLeft={isQuestionGlowing && index === currentQuestionIndex ? questionTimeLeft : undefined}
               />
             </div>
           ))}

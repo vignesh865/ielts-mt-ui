@@ -26,7 +26,7 @@ function TestSections() {
     queryKey: ['test', testId],
     queryFn: async () => {
       const host = import.meta.env.VITE_API_HOST;
-      const response = await fetch(`${host}/ielts/${testId}`, {
+      const response = await fetch(`${host}/ielts/test/${testId}`, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',

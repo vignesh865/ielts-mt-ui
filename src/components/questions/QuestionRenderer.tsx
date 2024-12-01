@@ -17,6 +17,7 @@ interface Props {
   onAnswer: (answer: any) => void;
   currentAnswer: any;
   isInstructionsGlowing?: boolean;
+  timeLeft?: number;
 }
 
 const QuestionRenderer: React.FC<Props> = ({
@@ -25,17 +26,25 @@ const QuestionRenderer: React.FC<Props> = ({
   onAnswer,
   currentAnswer,
   isInstructionsGlowing = false,
+  timeLeft
 }) => {
   var instructions = question[1]?.instructions;
 
   const renderInstructions = () => {
     if (!instructions) {
       instructions = 'Answer the following questions';
-    }
+    }      
+
     return (
-      <div className={`mb-8 bg-gradient-to-r from-indigo-50 to-purple-50 border-l-4 border-indigo-500 transition-all duration-300 ${
+      <div className={`relative mb-8 bg-gradient-to-r from-indigo-50 to-purple-50 border-l-4 border-indigo-500 transition-all duration-300 ${
         isInstructionsGlowing ? 'ring-2 ring-indigo-500 ring-opacity-50' : ''
       }`}>
+        {isInstructionsGlowing && timeLeft !== undefined && (
+          <div className="absolute top-2 right-2 text-sm text-gray-600">
+            Read {timeLeft}s
+          </div>
+        )}
+        
         <div className="px-6 py-4">
           <div className="flex items-center mb-2">
             <div className="w-2 h-2 bg-indigo-500 rounded-full mr-2"></div>

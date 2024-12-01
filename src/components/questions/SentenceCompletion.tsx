@@ -42,8 +42,7 @@ const SentenceCompletion: React.FC<Props> = ({ question, onAnswer, answers }) =>
                             type="text"
                             value={answers[index] || ''}
                             onChange={(e) => handleAnswerChange(index, e.target.value)}
-                            className="px-3 py-1 border-b-2 border-gray-300 focus:border-indigo-500 focus:outline-none min-w-[120px] bg-gray-50"
-                            placeholder="Enter answer..."
+                            className="px-3 py-1 border-b-2 border-gray-300 focus:border-indigo-500 focus:outline-none min-w-[80px]"
                           />
                         )}
                       </React.Fragment>
