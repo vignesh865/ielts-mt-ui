@@ -1,15 +1,18 @@
 import { useState } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Play } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import { parts } from '../data/speakingParts';
+import SpeakingModal from '../components/speaking/SpeakingModal';
 import { useLocation } from 'react-router-dom';
 
 const SpeakingTest = () => {
   const [currentPart, setCurrentPart] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const location = useLocation();
   const sectionData = location.state?.sectionData;
-  
+
   const currentPartData = parts[currentPart - 1];
+  const speakingData = sectionData?.[`part${currentPart}`];
 
   return (
     <TestLayout
@@ -33,13 +36,32 @@ const SpeakingTest = () => {
           <div className="space-y-4">
             <h4 className="font-semibold">Instructions</h4>
             <ul className="list-disc list-inside space-y-2 text-gray-600">
+              <li>Listen carefully to each question</li>
               <li>Speak clearly and at a natural pace</li>
               <li>Use a range of vocabulary and grammatical structures</li>
               <li>Provide detailed responses</li>
               <li>Stay on topic and answer the questions directly</li>
             </ul>
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              >
+                <Play className="w-5 h-5" />
+                Start Speaking Test
+              </button>
+            </div>
           </div>
         </div>
+
+        {speakingData && (
+          <SpeakingModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            audioUrls={speakingData.audio.map((a: any) => a.download_url)}
+            speakingTime={speakingData.speaking_time}
+          />
+        )}
 
         <div className="flex justify-between mt-6">
           <button

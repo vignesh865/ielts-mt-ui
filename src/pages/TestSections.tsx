@@ -19,7 +19,9 @@ function TestSections() {
   const navigate = useNavigate();
   const { testId } = useParams() as { testId: string };
   const [activeSection, setActiveSection] = React.useState<string>('listening');
-  const [completedSections, setCompletedSections] = React.useState<string[]>([]);
+  const [completedSections, setCompletedSections] = React.useState<string[]>(
+    []
+  );
   const [showSubmitModal, setShowSubmitModal] = React.useState(false);
 
   const { data: testDetails, status } = useQuery<TestDetails>({
@@ -28,7 +30,7 @@ function TestSections() {
       const host = import.meta.env.VITE_API_HOST;
       const response = await fetch(`${host}/ielts/test/${testId}`, {
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': 'anyvalue',
         },
@@ -112,8 +114,12 @@ function TestSections() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Test</h2>
-          <p className="text-red-500 mb-4">Failed to load test details. Please try again.</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Error Loading Test
+          </h2>
+          <p className="text-red-500 mb-4">
+            Failed to load test details. Please try again.
+          </p>
           <button
             onClick={() => navigate('/')}
             className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
@@ -139,8 +145,12 @@ function TestSections() {
 
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{testDetails?.test_name}</h1>
-              <p className="text-gray-600 mt-1">{testDetails?.test_type} Test</p>
+              <h1 className="text-3xl font-bold text-gray-900">
+                {testDetails?.test_name}
+              </h1>
+              <p className="text-gray-600 mt-1">
+                {testDetails?.test_type} Test
+              </p>
             </div>
             <button
               onClick={handleSubmitTest}
@@ -159,7 +169,9 @@ function TestSections() {
                 duration={section.duration}
                 description={section.description}
                 isActive={activeSection === section.id}
-                isDisabled={!section.enabled || completedSections.includes(section.id)}
+                isDisabled={
+                  !section.enabled || completedSections.includes(section.id)
+                }
                 onClick={() => handleSectionClick(section.id, testDetails)}
               />
             ))}
@@ -170,8 +182,12 @@ function TestSections() {
       {showSubmitModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-8 rounded-xl shadow-lg">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Test Submitted</h3>
-            <p className="text-gray-600">Your test has been submitted successfully.</p>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">
+              Test Submitted
+            </h3>
+            <p className="text-gray-600">
+              Your test has been submitted successfully.
+            </p>
           </div>
         </div>
       )}
