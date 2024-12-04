@@ -3,22 +3,26 @@ import { Mic, X, ChevronRight } from 'lucide-react';
 import AudioPlayer from '../AudioPlayer';
 import Timer from './Timer';
 
-interface TaskTwoModalProps {
+interface SpeakingLongTurnProps {
   isOpen: boolean;
   onClose: () => void;
   taskCard: string;
   pointsToInclude: string[];
   audioUrls: string[];
   speakingTime: number;
+  questionId?: string;
+  onAnswer?: (id: string, recordings: Blob[]) => void;
 }
 
-const SpeakingTaskTwoModal: React.FC<TaskTwoModalProps> = ({
+const SpeakingLongTurn: React.FC<SpeakingLongTurnProps> = ({
   isOpen,
   onClose,
   taskCard,
   pointsToInclude,
   audioUrls,
   speakingTime,
+  questionId,
+  onAnswer,
 }) => {
   const [phase, setPhase] = useState<'preparation' | 'mainTask' | 'followUp'>('preparation');
   const [currentAudioIndex, setCurrentAudioIndex] = useState(0);
@@ -59,6 +63,9 @@ const SpeakingTaskTwoModal: React.FC<TaskTwoModalProps> = ({
       mediaRecorder.onstop = () => {
         const blob = new Blob(chunksRef.current, { type: 'audio/mp3' });
         setRecordings(prev => [...prev, blob]);
+        if (questionId && onAnswer) {
+          onAnswer(questionId, [...recordings, blob]);
+        }
         chunksRef.current = [];
       };
 
@@ -218,4 +225,4 @@ const SpeakingTaskTwoModal: React.FC<TaskTwoModalProps> = ({
   );
 };
 
-export default SpeakingTaskTwoModal;
+export default SpeakingLongTurn;

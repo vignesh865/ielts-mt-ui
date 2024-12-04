@@ -2,18 +2,26 @@ import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight, Play } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import { parts } from '../data/speakingParts';
-import SpeakingModal from '../components/speaking/SpeakingModal';
-import SpeakingTaskTwoModal from '../components/speaking/SpeakingTaskTwoModal';
+import SpeakingDiscussion from '../components/speaking/SpeakingDiscussion';
+import SpeakingLongTurn from '../components/speaking/SpeakingLongTurn';
 import { useLocation } from 'react-router-dom';
 
 const SpeakingTest = () => {
   const [currentPart, setCurrentPart] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [answers, setAnswers] = useState<Record<string, Blob[]>>({});
   const location = useLocation();
   const sectionData = location.state?.sectionData;
 
   const currentPartData = parts[currentPart - 1];
   const speakingData = sectionData?.[`part${currentPart}`];
+
+  const handleAnswer = (questionId: string, recordings: Blob[]) => {
+    setAnswers(prev => ({
+      ...prev,
+      [questionId]: recordings
+    }));
+  };
 
   return (
     <TestLayout
@@ -56,31 +64,37 @@ const SpeakingTest = () => {
         </div>
 
         {currentPart === 1 && speakingData && (
-          <SpeakingModal
+          <SpeakingDiscussion
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             audioUrls={speakingData.audio.map((a: any) => a.download_url)}
             speakingTime={speakingData.speaking_time}
+            questionId={speakingData.data.id}
+            onAnswer={handleAnswer}
           />
         )}
 
         {currentPart === 2 && speakingData && (
-          <SpeakingTaskTwoModal
+          <SpeakingLongTurn
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             taskCard={speakingData.data.task_card}
             pointsToInclude={speakingData.data.points_to_be_included}
             audioUrls={speakingData.audio.map((a: any) => a.download_url)}
             speakingTime={speakingData.speaking_time}
+            questionId={speakingData.data.id}
+            onAnswer={handleAnswer}
           />
         )}
 
         {currentPart === 3 && speakingData && (
-          <SpeakingModal
+          <SpeakingDiscussion
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             audioUrls={speakingData.audio.map((a: any) => a.download_url)}
             speakingTime={speakingData.speaking_time}
+            questionId={speakingData.data.id}
+            onAnswer={handleAnswer}
           />
         )}
 
