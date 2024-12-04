@@ -4,6 +4,7 @@ import { ArrowLeft, Headphones, BookOpen, PenLine, Mic } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import TestSection from '../components/TestSection';
 import LoadingState from '../components/LoadingState';
+import { fetchTest, submitTest } from '../services/api';
 
 interface TestDetails {
   test_id: string;
@@ -19,27 +20,14 @@ function TestSections() {
   const navigate = useNavigate();
   const { testId } = useParams() as { testId: string };
   const [activeSection, setActiveSection] = React.useState<string>('listening');
-  const [completedSections, setCompletedSections] = React.useState<string[]>(
-    []
-  );
+  const [completedSections, setCompletedSections] = React.useState<string[]>([]);
   const [showSubmitModal, setShowSubmitModal] = React.useState(false);
+  const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [submitError, setSubmitError] = React.useState<string>('');
 
   const { data: testDetails, status } = useQuery<TestDetails>({
     queryKey: ['test', testId],
-    queryFn: async () => {
-      const host = import.meta.env.VITE_API_HOST;
-      const response = await fetch(`${host}/ielts/test/${testId}`, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'anyvalue',
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch test details');
-      }
-      return response.json();
-    },
+    queryFn: () => fetchTest(testId),
   });
 
   const sections = [
@@ -95,11 +83,32 @@ function TestSections() {
     }
   };
 
-  const handleSubmitTest = () => {
+  const handleSubmitTest = async () => {
+    setSubmitStatus('loading');
     setShowSubmitModal(true);
-    setTimeout(() => {
-      navigate('/');
-    }, 2000);
+
+    try {
+      // Get answers from localStorage
+      const answers = {
+        test_id: testId,
+        listening: JSON.parse(localStorage.getItem(`test_${testId}_listening`) || '{}'),
+        reading: JSON.parse(localStorage.getItem(`test_${testId}_reading`) || '{}'),
+        writing: JSON.parse(localStorage.getItem(`test_${testId}_writing`) || '{}'),
+        speaking: JSON.parse(localStorage.getItem(`test_${testId}_speaking`) || '{}'),
+      };
+
+      const response = await submitTest(testId, answers);
+      console.log('Test submission response:', response);
+      
+      setSubmitStatus('success');
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+    } catch (error) {
+      console.error('Error submitting test:', error);
+      setSubmitStatus('error');
+      setSubmitError('Failed to submit test. Please try again.');
+    }
   };
 
   if (status === 'pending') {
@@ -182,12 +191,30 @@ function TestSections() {
       {showSubmitModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-8 rounded-xl shadow-lg">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
-              Test Submitted
-            </h3>
-            <p className="text-gray-600">
-              Your test has been submitted successfully.
-            </p>
+            {submitStatus === 'loading' && (
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent mx-auto mb-4"></div>
+                <p className="text-gray-600">Submitting your test...</p>
+              </div>
+            )}
+            {submitStatus === 'success' && (
+              <>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Test Submitted</h3>
+                <p className="text-gray-600">Your test has been submitted successfully.</p>
+              </>
+            )}
+            {submitStatus === 'error' && (
+              <>
+                <h3 className="text-xl font-bold text-red-600 mb-2">Submission Failed</h3>
+                <p className="text-gray-600">{submitError}</p>
+                <button
+                  onClick={() => setShowSubmitModal(false)}
+                  className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                >
+                  Close
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}
