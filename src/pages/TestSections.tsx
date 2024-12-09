@@ -84,14 +84,6 @@ function TestSections() {
     }
   };
 
-  const saveSectionAnswers = (sectionId: string, answers: any) => {
-    localStorage.setItem(`test_${testId}_${sectionId}`, JSON.stringify(answers));
-    // Update completed sections
-    const updatedSections = [...completedSections, sectionId];
-    setCompletedSections(updatedSections);
-    localStorage.setItem(`test_${testId}_completed`, JSON.stringify(updatedSections));
-  };
-
   const handleSubmitTest = async () => {
     setSubmitStatus('loading');
     setShowSubmitModal(true);
@@ -106,13 +98,20 @@ function TestSections() {
         speaking: JSON.parse(localStorage.getItem(`test_${testId}_speaking`) || '{}'),
       };
 
-      const response = await submitTest(testId, answers);
-      console.log('Test submission response:', response);
-      
+      const scoreData = await submitTest(testId, answers);
       setSubmitStatus('success');
+      
+      // Clear test data from localStorage
+      ['listening', 'reading', 'writing', 'speaking', 'completed'].forEach(key => {
+        localStorage.removeItem(`test_${testId}_${key}`);
+      });
+
+      // Navigate to score screen with score data
       setTimeout(() => {
-        navigate('/');
-      }, 2000);
+        navigate(`/test/${testId}/score`, {
+          state: { scoreData }
+        });
+      }, 1500);
     } catch (error) {
       console.error('Error submitting test:', error);
       setSubmitStatus('error');
@@ -208,8 +207,8 @@ function TestSections() {
             )}
             {submitStatus === 'success' && (
               <>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Test Submitted</h3>
-                <p className="text-gray-600">Your test has been submitted successfully.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Test Submitted Successfully</h3>
+                <p className="text-gray-600">Redirecting to your results...</p>
               </>
             )}
             {submitStatus === 'error' && (

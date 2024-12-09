@@ -1,5 +1,4 @@
 import { Test } from '../types/test';
-import { base64ToBlob } from '../utils/blobUtils';
 
 const API_HOST = import.meta.env.VITE_API_HOST;
 

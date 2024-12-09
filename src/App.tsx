@@ -6,6 +6,7 @@ import ListeningTest from './pages/ListeningTest';
 import ReadingTest from './pages/ReadingTest';
 import WritingTest from './pages/WritingTest';
 import SpeakingTest from './pages/SpeakingTest';
+import ScoreScreen from './pages/ScoreScreen';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/test/:testId/reading" element={<ReadingTest />} />
         <Route path="/test/:testId/writing" element={<WritingTest />} />
         <Route path="/test/:testId/speaking" element={<SpeakingTest />} />
+        <Route path="/test/:testId/score" element={<ScoreScreen />} />
       </Routes>
     </Router>
   );
