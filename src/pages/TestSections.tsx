@@ -77,10 +77,19 @@ function TestSections() {
       setActiveSection(sectionId);
       navigate(`/test/${testId}/${sectionId}`, {
         state: {
+          testId: testId,
           sectionData: testDetails[sectionId],
         },
       });
     }
+  };
+
+  const saveSectionAnswers = (sectionId: string, answers: any) => {
+    localStorage.setItem(`test_${testId}_${sectionId}`, JSON.stringify(answers));
+    // Update completed sections
+    const updatedSections = [...completedSections, sectionId];
+    setCompletedSections(updatedSections);
+    localStorage.setItem(`test_${testId}_completed`, JSON.stringify(updatedSections));
   };
 
   const handleSubmitTest = async () => {

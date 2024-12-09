@@ -10,6 +10,7 @@ import remarkGfm from 'remark-gfm'
 const ReadingTest = () => {
   const [currentPart, setCurrentPart] = useState(1);
   const location = useLocation();
+  const testId = location.state?.testId;
   const sectionData = location.state?.sectionData;
   
   const [answers, setAnswers] = useState<Record<string, any>>({});
@@ -17,10 +18,16 @@ const ReadingTest = () => {
   const currentPartData = sectionData[`part${currentPart}`];
 
   const handleAnswer = (questionId: string, answer: any) => {
-    setAnswers((prev) => ({
-      ...prev,
+    const updatedAnswers = {
+      ...answers,
       [questionId]: answer,
-    }));
+    };
+    setAnswers(updatedAnswers);
+
+    localStorage.setItem(
+      `test_${testId}_reading`,
+      JSON.stringify(updatedAnswers)
+    );
   };
 
   return (

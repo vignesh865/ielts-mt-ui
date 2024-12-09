@@ -14,6 +14,7 @@ const ListeningTest = () => {
   const [currentAudioIndex, setCurrentAudioIndex] = useState(0);
   const [shouldPlayAudio, setShouldPlayAudio] = useState(false);
   const location = useLocation();
+  const testId = location.state?.testId;
   const sectionData = location.state?.sectionData;
   const timeoutRef = useRef<NodeJS.Timeout>();
 
@@ -29,10 +30,16 @@ const ListeningTest = () => {
   const intervalRef = useRef<NodeJS.Timeout>();
 
   const handleAnswer = (questionId: string, answer: any) => {
-    setAnswers((prev) => ({
-      ...prev,
+    const updatedAnswers = {
+      ...answers,
       [questionId]: answer,
-    }));
+    };
+    setAnswers(updatedAnswers);
+
+    localStorage.setItem(
+      `test_${testId}_listening`,
+      JSON.stringify(updatedAnswers)
+    );
   };
 
 

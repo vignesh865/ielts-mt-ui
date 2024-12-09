@@ -9,15 +9,22 @@ const WritingTest = () => {
   const [currentTask, setCurrentTask] = useState(1);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const location = useLocation();
+  const testId = location.state?.testId;
   const sectionData = location.state?.sectionData;
 
   const currentTaskData = sectionData?.[`part${currentTask}`];
 
-  const handleAnswerChange = (questionId: string, value: string) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [questionId]: value,
-    }));
+  const handleAnswerChange = (questionId: string, answer: string) => {
+    const updatedAnswers = {
+      ...answers,
+      [questionId]: answer,
+    };
+    setAnswers(updatedAnswers);
+
+    localStorage.setItem(
+      `test_${testId}_reading`,
+      JSON.stringify(updatedAnswers)
+    );
   };
 
   const getTaskTitle = (taskNumber: number) => {

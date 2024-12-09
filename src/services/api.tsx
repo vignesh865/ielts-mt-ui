@@ -1,4 +1,5 @@
 import { Test } from '../types/test';
+import { base64ToBlob } from '../utils/blobUtils';
 
 const API_HOST = import.meta.env.VITE_API_HOST;
 
@@ -17,7 +18,8 @@ export const fetchTest = async (testId: string): Promise<Test> => {
 };
 
 export const submitTest = async (testId: string, answers: any) => {
-  const response = await fetch(`${API_HOST}/ielts/test/${testId}/validate`, {
+
+  const response = await fetch(`${API_HOST}/ielts/test/${testId}/score`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

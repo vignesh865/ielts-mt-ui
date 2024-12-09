@@ -3,8 +3,8 @@ import type { MatchingFeaturesQuestion } from './types';
 
 interface Props {
   question: MatchingFeaturesQuestion;
-  onAnswer: (answer: { question_id: string; answers: Record<number, number> }) => void;
-  selectedAnswers: Record<number, number>;
+  onAnswer: (answer: { question_id: string; answers: string[] }) => void;
+  selectedAnswers: Record<number, string>;
 }
 
 const MatchingFeatures: React.FC<Props> = ({ question, onAnswer, selectedAnswers }) => {
@@ -14,9 +14,15 @@ const MatchingFeatures: React.FC<Props> = ({ question, onAnswer, selectedAnswers
       [statementIndex]: optionIndex,
     };
 
+    // Convert the dictionary to a list of answers
+    const answersList = question.statements.map((_, index) => {
+      const selectedOption = newAnswers[index];
+      return selectedOption !== undefined ? selectedOption.toString() : '';
+    });
+
     onAnswer({
       question_id: question.id,
-      answers: newAnswers,
+      answers: answersList,
     });
   };
 
@@ -68,7 +74,7 @@ const MatchingFeatures: React.FC<Props> = ({ question, onAnswer, selectedAnswers
                       <input
                         type="radio"
                         name={`statement-${rowIndex}`}
-                        checked={selectedAnswers[rowIndex] === option.index}
+                        checked={parseInt(selectedAnswers[rowIndex]) === option.index}
                         onChange={() => handleSelection(rowIndex, option.index)}
                         className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
                       />

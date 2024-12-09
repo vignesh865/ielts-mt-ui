@@ -5,22 +5,40 @@ import { parts } from '../data/speakingParts';
 import SpeakingDiscussion from '../components/speaking/SpeakingDiscussion';
 import SpeakingLongTurn from '../components/speaking/SpeakingLongTurn';
 import { useLocation } from 'react-router-dom';
+import { blobToBase64 } from '../utils/blobUtils';
 
 const SpeakingTest = () => {
   const [currentPart, setCurrentPart] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [answers, setAnswers] = useState<Record<string, Blob[]>>({});
   const location = useLocation();
+  const testId = location.state?.testId;
   const sectionData = location.state?.sectionData;
 
   const currentPartData = parts[currentPart - 1];
   const speakingData = sectionData?.[`part${currentPart}`];
 
-  const handleAnswer = (questionId: string, recordings: Blob[]) => {
-    setAnswers(prev => ({
-      ...prev,
-      [questionId]: recordings
-    }));
+  const handleAnswer = async (questionId: string, recordings: Blob[]) => {
+    const updatedAnswers = {
+      ...answers,
+      [questionId]: recordings,
+    };
+    setAnswers(updatedAnswers);
+
+    // Convert Blobs to base64 strings for storage
+    const base64Recordings = await Promise.all(
+      recordings.map(blob => blobToBase64(blob))
+    );
+
+    const storageAnswers = {
+      ...JSON.parse(localStorage.getItem(`test_${testId}_speaking`) || '{}'),
+      [questionId]: base64Recordings,
+    };
+
+    localStorage.setItem(
+      `test_${testId}_speaking`,
+      JSON.stringify(storageAnswers)
+    );
   };
 
   return (
