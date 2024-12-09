@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
-import { GraduationCap, Users } from 'lucide-react';
+import { GraduationCap, Users, Infinity, Brain, MessageSquare, Sparkles } from 'lucide-react';
 import LoadingState from '../components/LoadingState';
 import TestCard from '../components/TestCard';
 import type { Test } from '../types/test';
@@ -41,6 +41,29 @@ const fetchTests = async ({
     throw error;
   }
 };
+
+const features = [
+  {
+    icon: <Infinity className="w-6 h-6" />,
+    title: "Endless Practice",
+    description: "Access thousands of unique IELTS tests to perfect your skills",
+  },
+  {
+    icon: <Sparkles className="w-6 h-6" />,
+    title: "Always Fresh",
+    description: "Never see the same test twice with our dynamic test generation",
+  },
+  {
+    icon: <Brain className="w-6 h-6" />,
+    title: "Comprehensive Evaluation",
+    description: "Get detailed feedback for listening, reading, writing, and speaking",
+  },
+  {
+    icon: <MessageSquare className="w-6 h-6" />,
+    title: "Authentic Experience",
+    description: "Practice with tests that closely mirror the real IELTS exam",
+  }
+];
 
 function Home() {
   const navigate = useNavigate();
@@ -98,21 +121,45 @@ function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
       <div className="relative overflow-hidden bg-indigo-600 text-white">
-        <img
-          src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=1920&auto=format&fit=crop&q=80"
-          alt="Students studying"
-          className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-20"
-        />
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-90" />
+          <img
+            src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=1920&auto=format&fit=crop&q=80"
+            alt="Students studying"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        
         <div className="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-              IELTS Practice Tests
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-8">
+              Master IELTS with Confidence
             </h1>
-            <p className="mt-6 text-xl max-w-3xl mx-auto">
-              Prepare for your IELTS exam with our comprehensive practice tests
-              covering all four sections: Listening, Reading, Writing, and
-              Speaking.
+            <p className="mt-6 text-xl max-w-3xl mx-auto text-indigo-100">
+              Practice with our comprehensive test platform designed to help you achieve your target score.
             </p>
+            <div className="mt-10">
+              <button className="px-8 py-4 bg-white text-indigo-600 rounded-full font-semibold hover:bg-indigo-50 transition-colors">
+                Start Free Practice
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 pb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="bg-white bg-opacity-10 backdrop-blur-lg rounded-xl p-6 transform hover:scale-105 transition-all"
+              >
+                <div className="p-3 bg-white bg-opacity-20 rounded-lg inline-block mb-4">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-indigo-100">{feature.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
