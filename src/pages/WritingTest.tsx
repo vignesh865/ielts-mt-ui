@@ -22,7 +22,7 @@ const WritingTest = () => {
     setAnswers(updatedAnswers);
 
     localStorage.setItem(
-      `test_${testId}_reading`,
+      `test_${testId}_writing`,
       JSON.stringify(updatedAnswers)
     );
   };

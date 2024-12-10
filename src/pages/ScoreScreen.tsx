@@ -3,6 +3,7 @@ import { ArrowLeft, Award, Target, BookOpen, Headphones, PenLine, Mic } from 'lu
 import SectionScore from '../components/scores/SectionScore';
 import SpeakingFeedback from '../components/scores/SpeakingFeedback';
 import { useNavigate } from 'react-router-dom';
+import WritingFeedback from '../components/scores/WritingFeedback';
 
 const ScoreScreen = () => {
   const location = useLocation();
@@ -25,26 +26,19 @@ const ScoreScreen = () => {
     );
   }
 
-  const calculateOverallScore = () => {
-    let totalScore = 0;
-    let actualScore = 0;
-    let sections = 0;
+//   const calculateOverallScore = () => {
+//     let band = 0;
+//     let sections = 0;
 
-    ['listening', 'reading', 'writing', 'speaking'].forEach(section => {
-      if (scoreData[section]) {
-        if (section === 'speaking') {
-          totalScore += 9;
-          actualScore += scoreData[section].band;
-        } else {
-          totalScore += scoreData[section].total_score;
-          actualScore += scoreData[section].actual_score;
-        }
-        sections++;
-      }
-    });
+//     ['listening', 'reading', 'writing', 'speaking'].forEach(section => {
+//       if (scoreData[section]) {
+//         band += scoreData[section].band
+//         sections++;
+//       }
+//     });
 
-    return sections > 0 ? Math.round((actualScore / totalScore) * 9) : 0;
-  };
+//     return sections > 0 ? Math.round((actualScore / totalScore) * 9) : 0;
+//   };
 
   const getSectionIcon = (section: string) => {
     switch (section) {
@@ -84,7 +78,7 @@ const ScoreScreen = () => {
                   <Target className="w-6 h-6" />
                   <h3 className="text-lg font-semibold">Overall Band Score</h3>
                 </div>
-                <p className="text-5xl font-bold">{calculateOverallScore()}</p>
+                <p className="text-5xl font-bold">{scoreData.band}</p>
               </div>
               {['listening', 'reading', 'writing', 'speaking'].map((section) => (
                 <div
@@ -97,7 +91,7 @@ const ScoreScreen = () => {
                   </div>
                   <p className="text-4xl font-bold">
                     {scoreData[section] 
-                      ? section === 'speaking'
+                      ? section === 'speaking' || section === 'writing' 
                         ? scoreData[section].band.toFixed(1)
                         : Math.round((scoreData[section].actual_score / scoreData[section].total_score) * 9)
                       : 'N/A'}
@@ -124,7 +118,13 @@ const ScoreScreen = () => {
             />
           )}
 
-          {scoreData.writing && (
+        {scoreData.writing && (
+            <WritingFeedback
+              band={scoreData.writing.band}
+              partScores={scoreData.writing.part_scores}
+            />
+          )}
+          {/* {scoreData.writing && (
             <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Writing Evaluation</h2>
               <p className="text-gray-600">
@@ -132,7 +132,7 @@ const ScoreScreen = () => {
                 Results will be available soon.
               </p>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>
