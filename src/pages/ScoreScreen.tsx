@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import SectionScore from '../components/scores/SectionScore';
+import SpeakingFeedback from '../components/scores/SpeakingFeedback';
 import { useNavigate } from 'react-router-dom';
 
 const ScoreScreen = () => {
@@ -31,8 +32,13 @@ const ScoreScreen = () => {
 
     ['listening', 'reading', 'writing', 'speaking'].forEach(section => {
       if (scoreData[section]) {
-        totalScore += scoreData[section].total_score;
-        actualScore += scoreData[section].actual_score;
+        if (section === 'speaking') {
+          totalScore += 9;
+          actualScore += scoreData[section].band;
+        } else {
+          totalScore += scoreData[section].total_score;
+          actualScore += scoreData[section].actual_score;
+        }
         sections++;
       }
     });
@@ -67,7 +73,9 @@ const ScoreScreen = () => {
                   <h3 className="text-lg font-semibold mb-2 capitalize">{section}</h3>
                   <p className="text-4xl font-bold text-gray-900">
                     {scoreData[section] 
-                      ? Math.round((scoreData[section].actual_score / scoreData[section].total_score) * 9)
+                      ? section === 'speaking'
+                        ? scoreData[section].band.toFixed(1)
+                        : Math.round((scoreData[section].actual_score / scoreData[section].total_score) * 9)
                       : 'N/A'}
                   </p>
                 </div>
@@ -85,11 +93,18 @@ const ScoreScreen = () => {
             )
           ))}
 
-          {(scoreData.writing || scoreData.speaking) && (
+          {scoreData.speaking && (
+            <SpeakingFeedback
+              band={scoreData.speaking.band}
+              partScores={scoreData.speaking.part_scores}
+            />
+          )}
+
+          {scoreData.writing && (
             <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Writing & Speaking Evaluation</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Writing Evaluation</h2>
               <p className="text-gray-600">
-                Your Writing and Speaking responses are being evaluated by our assessment system.
+                Your Writing responses are being evaluated by our assessment system.
                 Results will be available soon.
               </p>
             </div>
