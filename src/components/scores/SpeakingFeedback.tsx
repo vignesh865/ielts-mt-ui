@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Mic, AlertCircle } from 'lucide-react';
 
 interface Feedback {
   fluence_and_coherence: number;
@@ -28,21 +28,31 @@ const SpeakingFeedback: React.FC<SpeakingFeedbackProps> = ({ band, partScores })
   };
 
   const renderFeedbackSection = (title: string, score: number, feedback: string) => (
-    <div className="mb-4 last:mb-0">
-      <div className="flex items-center justify-between mb-2">
+    <div className="mb-6 last:mb-0 bg-gray-50 rounded-lg p-4">
+      <div className="flex items-center justify-between mb-3">
         <h5 className="font-medium text-gray-900">{title}</h5>
-        <span className="text-lg font-semibold text-indigo-600">{score.toFixed(1)}</span>
+        <span className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full font-semibold">
+          Band {score.toFixed(1)}
+        </span>
       </div>
-      <p className="text-gray-600 text-sm">{feedback}</p>
+      <p className="text-gray-600 text-sm leading-relaxed">{feedback}</p>
     </div>
   );
 
   return (
     <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center gap-3 mb-6">
+        <Mic className="w-7 h-7 text-indigo-600" />
         <h2 className="text-2xl font-bold text-gray-900">Speaking Evaluation</h2>
-        <div className="px-4 py-2 bg-indigo-600 text-white rounded-lg">
-          Overall Band: {band.toFixed(1)}
+      </div>
+
+      <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded mb-6">
+        <div className="flex gap-2">
+          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <p className="text-sm text-amber-700">
+            Note: Individual part and task band scores are provided for your understanding of performance in specific areas. 
+            In the actual IELTS test, only an overall speaking band score is awarded.
+          </p>
         </div>
       </div>
 
@@ -51,7 +61,9 @@ const SpeakingFeedback: React.FC<SpeakingFeedbackProps> = ({ band, partScores })
           <div key={index} className="border rounded-lg overflow-hidden">
             <button
               onClick={() => togglePart(index)}
-              className="w-full px-6 py-4 flex items-center justify-between bg-gray-50 hover:bg-gray-100"
+              className={`w-full px-6 py-4 flex items-center justify-between transition-colors ${
+                expandedPart === index ? 'bg-indigo-50' : 'bg-gray-50 hover:bg-gray-100'
+              }`}
             >
               <div>
                 <h3 className="text-lg font-semibold">Part {index + 1}</h3>
@@ -83,9 +95,10 @@ const SpeakingFeedback: React.FC<SpeakingFeedbackProps> = ({ band, partScores })
                   part.feedback.grammatical_range_and_accuracy,
                   part.feedback.grammatical_range_and_accuracy_feedback
                 )}
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-600">
-                    Note: Pronunciation evaluation will be included in future updates.
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <p className="text-sm text-gray-600 flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 text-gray-400" />
+                    Pronunciation evaluation will be included in future updates
                   </p>
                 </div>
               </div>

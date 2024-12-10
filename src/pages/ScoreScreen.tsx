@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Award, Target, BookOpen, Headphones, PenLine, Mic } from 'lucide-react';
 import SectionScore from '../components/scores/SectionScore';
 import SpeakingFeedback from '../components/scores/SpeakingFeedback';
 import { useNavigate } from 'react-router-dom';
@@ -46,6 +46,21 @@ const ScoreScreen = () => {
     return sections > 0 ? Math.round((actualScore / totalScore) * 9) : 0;
   };
 
+  const getSectionIcon = (section: string) => {
+    switch (section) {
+      case 'listening':
+        return <Headphones className="w-6 h-6 text-blue-500" />;
+      case 'reading':
+        return <BookOpen className="w-6 h-6 text-green-500" />;
+      case 'writing':
+        return <PenLine className="w-6 h-6 text-yellow-500" />;
+      case 'speaking':
+        return <Mic className="w-6 h-6 text-purple-500" />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
       <div className="container mx-auto px-4 py-8">
@@ -58,20 +73,29 @@ const ScoreScreen = () => {
             Back to Tests
           </button>
 
-          <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-6">Test Results</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-6 text-white">
-                <h3 className="text-lg font-semibold mb-2">Overall Band Score</h3>
-                <p className="text-4xl font-bold">{calculateOverallScore()}</p>
+          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-lg p-8 mb-8 text-white">
+            <div className="flex items-center gap-4 mb-6">
+              <Award className="w-8 h-8" />
+              <h1 className="text-3xl font-bold">Test Results</h1>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 lg:col-span-2">
+                <div className="flex items-center gap-3 mb-2">
+                  <Target className="w-6 h-6" />
+                  <h3 className="text-lg font-semibold">Overall Band Score</h3>
+                </div>
+                <p className="text-5xl font-bold">{calculateOverallScore()}</p>
               </div>
               {['listening', 'reading', 'writing', 'speaking'].map((section) => (
                 <div
                   key={section}
-                  className="bg-gray-50 rounded-xl p-6"
+                  className="bg-white/10 backdrop-blur-lg rounded-xl p-6"
                 >
-                  <h3 className="text-lg font-semibold mb-2 capitalize">{section}</h3>
-                  <p className="text-4xl font-bold text-gray-900">
+                  <div className="flex items-center gap-3 mb-2">
+                    {getSectionIcon(section)}
+                    <h3 className="text-lg font-semibold capitalize">{section}</h3>
+                  </div>
+                  <p className="text-4xl font-bold">
                     {scoreData[section] 
                       ? section === 'speaking'
                         ? scoreData[section].band.toFixed(1)
