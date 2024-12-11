@@ -133,7 +133,7 @@ function Home() {
         <div className="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-8">
-              Master IELTS with Confidence
+              Master IELTS with AI
             </h1>
             <p className="mt-6 text-xl max-w-3xl mx-auto text-indigo-100">
               Practice with our comprehensive test platform designed to help you achieve your target score.

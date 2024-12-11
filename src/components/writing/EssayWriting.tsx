@@ -16,7 +16,7 @@ const EssayWriting: React.FC<EssayWritingProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-6">
+    <div className="grid grid-cols-2 gap-2">
       <div className="bg-white p-6 rounded-xl shadow-sm">
         <div className="prose max-w-none">
           <h4 className="text-lg font-semibold mb-4">Writing Task</h4>

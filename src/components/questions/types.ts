@@ -49,7 +49,6 @@ export type ShortAnswerQuestion = BaseQuestion & {
   instructions?: string;
   questions: {
     question: string;
-    answer: string;
   }[];
 };
 

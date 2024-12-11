@@ -3,18 +3,16 @@ import type { TrueFalseQuestion } from './types';
 
 interface Props {
   question: TrueFalseQuestion;
-  onAnswer: (answer: { question_id: string; answers: Record<number, 'True' | 'False' | 'Not Given'> }) => void;
-  selectedAnswers: Record<number, 'True' | 'False' | 'Not Given'>;
+  onAnswer: (answer: { question_id: string; answers: string[] }) => void;
+  selectedAnswers: string[];
 }
 
 const TrueFalseNG: React.FC<Props> = ({ question, onAnswer, selectedAnswers }) => {
   const options = ['True', 'False', 'Not Given'] as const;
 
   const handleAnswer = (statementIndex: number, value: 'True' | 'False' | 'Not Given') => {
-    const newAnswers = {
-      ...selectedAnswers,
-      [statementIndex]: value,
-    };
+    const newAnswers = [...selectedAnswers];
+    newAnswers[statementIndex]= value;
     onAnswer({
       question_id: question.id,
       answers: newAnswers

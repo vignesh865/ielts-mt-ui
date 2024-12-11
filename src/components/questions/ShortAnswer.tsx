@@ -3,16 +3,15 @@ import type { ShortAnswerQuestion } from './types';
 
 interface Props {
   question: ShortAnswerQuestion;
-  onAnswer: (answer: { question_id: string; answers: Record<number, string> }) => void;
-  answers: Record<number, string>;
+  onAnswer: (answer: { question_id: string; answers: string[] }) => void;
+  answers: string[];
 }
 
 const ShortAnswer: React.FC<Props> = ({ question, onAnswer, answers }) => {
+  
   const handleAnswer = (questionIndex: number, value: string) => {
-    const newAnswers = {
-      ...answers,
-      [questionIndex]: value,
-    };
+    const newAnswers = [...answers];
+    newAnswers[questionIndex] = value;
     onAnswer({
       question_id: question.id,
       answers: newAnswers,
@@ -42,7 +41,7 @@ const ShortAnswer: React.FC<Props> = ({ question, onAnswer, answers }) => {
         </div>
       ))}
       <div className="text-sm text-gray-500">
-        Answered {Object.keys(answers).length} of {question.questions.length} questions
+        Answered {answers.filter(Boolean).length} of {question.questions.length} questions
       </div>
     </div>
   );

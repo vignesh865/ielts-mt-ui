@@ -4,25 +4,17 @@ import type { MatchingFeaturesQuestion } from './types';
 interface Props {
   question: MatchingFeaturesQuestion;
   onAnswer: (answer: { question_id: string; answers: string[] }) => void;
-  selectedAnswers: Record<number, string>;
+  selectedAnswers: string[];
 }
 
 const MatchingFeatures: React.FC<Props> = ({ question, onAnswer, selectedAnswers }) => {
   const handleSelection = (statementIndex: number, optionIndex: number) => {
-    const newAnswers = {
-      ...selectedAnswers,
-      [statementIndex]: optionIndex,
-    };
-
-    // Convert the dictionary to a list of answers
-    const answersList = question.statements.map((_, index) => {
-      const selectedOption = newAnswers[index];
-      return selectedOption !== undefined ? selectedOption.toString() : '';
-    });
+    const newAnswers = [...selectedAnswers];
+    newAnswers[statementIndex] = optionIndex !== undefined ? optionIndex.toString() : '';
 
     onAnswer({
       question_id: question.id,
-      answers: answersList,
+      answers: newAnswers
     });
   };
 

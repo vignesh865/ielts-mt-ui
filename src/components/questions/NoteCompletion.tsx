@@ -8,8 +8,6 @@ interface Props {
 }
 
 const NoteCompletion: React.FC<Props> = ({ question, onAnswer, answers }) => {
-  const parts = question.note.blanked_note_text.split('$$$$');
-  const blankCount = parts.length - 1;
 
   const handleAnswerChange = (index: number, value: string) => {
     const newAnswers = [...answers];
@@ -19,7 +17,8 @@ const NoteCompletion: React.FC<Props> = ({ question, onAnswer, answers }) => {
       answers: newAnswers,
     });
   };
-
+  const parts = question.note.blanked_note_text.split('$$$$');
+  const blankCount = parts.length - 1;
   return (
     <div className="space-y-6">
       <div className="prose max-w-none">

@@ -3,16 +3,14 @@ import type { SingleChoiceQuestion } from './types';
 
 interface Props {
   question: SingleChoiceQuestion;
-  onAnswer: (answer: { question_id: string; answers: Record<number, string> }) => void;
-  selectedAnswers: Record<number, string>;
+  onAnswer: (answer: { question_id: string; answers: string[] }) => void;
+  selectedAnswers: string[];
 }
 
 const SingleChoice: React.FC<Props> = ({ question, onAnswer, selectedAnswers }) => {
   const handleAnswer = (questionIndex: number, answer: string) => {
-    const newAnswers = {
-      ...selectedAnswers,
-      [questionIndex]: answer,
-    };
+    const newAnswers = [...selectedAnswers]
+    newAnswers[questionIndex] = answer;
 
     onAnswer({
       question_id: question.id,

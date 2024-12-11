@@ -73,7 +73,7 @@ const QuestionRenderer: React.FC<Props> = ({
           <SingleChoice
             question={question}
             onAnswer={onAnswer}
-            selectedAnswers={currentAnswer || {}}
+            selectedAnswers={currentAnswer || []}
           />
         );
       case 'T_F_NG':
@@ -81,7 +81,7 @@ const QuestionRenderer: React.FC<Props> = ({
           <TrueFalseNG
             question={question}
             onAnswer={onAnswer}
-            selectedAnswers={currentAnswer || {}}
+            selectedAnswers={currentAnswer || []}
           />
         );
       case 'MATCHING_FEATURES':
@@ -89,7 +89,7 @@ const QuestionRenderer: React.FC<Props> = ({
           <MatchingFeatures
             question={question}
             onAnswer={onAnswer}
-            selectedAnswers={currentAnswer || {}}
+            selectedAnswers={currentAnswer || []}
           />
         );
       case 'NOTE_COMPLETION':
@@ -130,7 +130,7 @@ const QuestionRenderer: React.FC<Props> = ({
           <ShortAnswer
             question={question}
             onAnswer={onAnswer}
-            answers={currentAnswer || {}}
+            answers={currentAnswer || []}
           />
         );
       case 'DIAGRAM_LABEL_COMPLETION':
@@ -138,7 +138,7 @@ const QuestionRenderer: React.FC<Props> = ({
           <DiagramLabel
             question={question}
             onAnswer={onAnswer}
-            answers={currentAnswer || {}}
+            answers={currentAnswer || []}
           />
         );
       default:

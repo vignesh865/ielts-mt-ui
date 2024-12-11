@@ -40,7 +40,7 @@ const WritingTest = () => {
       onNext={() => setCurrentTask((prev) => Math.min(2, prev + 1))}
       progress={(currentTask / 2) * 100}
     >
-      <div className="space-y-6">
+      <div className="space-y-2">
         <div className="bg-white p-6 rounded-xl shadow-sm">
           <h3 className="text-xl font-bold mb-2">{getTaskTitle(currentTask)}</h3>
           <p className="text-gray-600 mb-4">

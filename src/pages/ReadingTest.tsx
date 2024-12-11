@@ -39,7 +39,7 @@ const ReadingTest = () => {
       onNext={() => setCurrentPart((prev) => Math.min(3, prev + 1))}
       progress={(currentPart / 3) * 100}
     >
-      <div className="space-y-6">
+      <div className="space-y-2">
         <div className="bg-white p-6 rounded-xl shadow-sm">
           <h3 className="text-xl font-bold mb-2">{currentPartData.title}</h3>
           <p className="text-gray-600 mb-4">{currentPartData.description}</p>
@@ -48,8 +48,8 @@ const ReadingTest = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
-          <div className="bg-white p-6 rounded-xl shadow-sm">
+        <div className="grid grid-cols-2 gap-2">
+          <div className="bg-white p-6 rounded-xl shadow-sm h-[calc(200vh-300px)] overflow-y-auto">
             <div className="prose max-w-none">
               <h4 className="text-lg font-semibold mb-4">Reading Passage</h4>
               <ReactMarkdown className="whitespace-pre-line"
@@ -58,7 +58,7 @@ const ReadingTest = () => {
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-2 h-[calc(200vh-300px)] overflow-y-auto pr-2">
             {currentPartData.data.map((question: BaseQuestion, index: number) => (
               <div
                 key={question[1].id}
