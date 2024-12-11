@@ -26,19 +26,6 @@ const ScoreScreen = () => {
     );
   }
 
-//   const calculateOverallScore = () => {
-//     let band = 0;
-//     let sections = 0;
-
-//     ['listening', 'reading', 'writing', 'speaking'].forEach(section => {
-//       if (scoreData[section]) {
-//         band += scoreData[section].band
-//         sections++;
-//       }
-//     });
-
-//     return sections > 0 ? Math.round((actualScore / totalScore) * 9) : 0;
-//   };
 
   const getSectionIcon = (section: string) => {
     switch (section) {
@@ -73,7 +60,7 @@ const ScoreScreen = () => {
               <h1 className="text-3xl font-bold">Test Results</h1>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-              <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 lg:col-span-2">
+              <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 lg:col-span-1">
                 <div className="flex items-center gap-3 mb-2">
                   <Target className="w-6 h-6" />
                   <h3 className="text-lg font-semibold">Overall Band Score</h3>
@@ -83,8 +70,7 @@ const ScoreScreen = () => {
               {['listening', 'reading', 'writing', 'speaking'].map((section) => (
                 <div
                   key={section}
-                  className="bg-white/10 backdrop-blur-lg rounded-xl p-6"
-                >
+                  className="bg-white/10 backdrop-blur-lg rounded-xl p-6">
                   <div className="flex items-center gap-3 mb-2">
                     {getSectionIcon(section)}
                     <h3 className="text-lg font-semibold capitalize">{section}</h3>

@@ -33,7 +33,7 @@ const NoteCompletion: React.FC<Props> = ({ question, onAnswer, answers }) => {
                   value={answers[index] || ''}
                   onChange={(e) => handleAnswerChange(index, e.target.value)}
                   className="mx-2 px-3 py-1 border-b-2 border-gray-300 focus:border-indigo-500 focus:outline-none min-w-[80px]"
-                //   placeholder={`Answer ${index + 1}`}
+                  placeholder={`Answer ${index + 1}`}
                 />
               )}
             </React.Fragment>

@@ -21,11 +21,6 @@ const EssayWriting: React.FC<EssayWritingProps> = ({
         <div className="prose max-w-none">
           <h4 className="text-lg font-semibold mb-4">Writing Task</h4>
           <div className="whitespace-pre-line">{taskData?.data[1]?.question}</div>
-          <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">
-              Note: Write a well-structured essay with clear arguments and examples.
-            </p>
-          </div>
         </div>
       </div>
 

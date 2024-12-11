@@ -21,11 +21,6 @@ const LetterWriting: React.FC<LetterWritingProps> = ({
         <div className="prose max-w-none">
           <h4 className="text-lg font-semibold mb-4">Writing Task</h4>
           <div className="whitespace-pre-line">{taskData?.data[1]?.question}</div>
-          <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600">
-              Note: This is a semi-formal letter. Use an appropriate tone and format.
-            </p>
-          </div>
         </div>
       </div>
 

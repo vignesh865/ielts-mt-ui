@@ -28,7 +28,7 @@ const QuestionRenderer: React.FC<Props> = ({
   isInstructionsGlowing = false,
   timeLeft
 }) => {
-  var instructions = question[1]?.instructions;
+  var instructions = question?.instructions;
 
   const renderInstructions = () => {
     if (!instructions) {

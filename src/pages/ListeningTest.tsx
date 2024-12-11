@@ -23,8 +23,8 @@ const ListeningTest = () => {
   const currentPartData = sectionData[`part${currentPart}`];
   const currentAudioUrl = currentPartData?.audio?.[currentAudioIndex]?.download_url;
 
-  const [partTimeLeft, setPartTimeLeft] = useState<number>(15);
-  const [questionTimeLeft, setQuestionTimeLeft] = useState<number>(30);
+  const [partTimeLeft, setPartTimeLeft] = useState<number>(5);
+  const [questionTimeLeft, setQuestionTimeLeft] = useState<number>(15);
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const intervalRef = useRef<NodeJS.Timeout>();
@@ -47,7 +47,7 @@ const ListeningTest = () => {
     if (currentQuestionIndex < currentPartData.data.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
       setIsQuestionGlowing(true);
-      setQuestionTimeLeft(30); // Reset timer for new question
+      setQuestionTimeLeft(15); // Reset timer for new question
       
       // Start new question timer
       const questionInterval = setInterval(() => {
@@ -58,7 +58,7 @@ const ListeningTest = () => {
         setIsQuestionGlowing(false);
         setShouldPlayAudio(true);
         clearInterval(questionInterval);
-      }, 30000);
+      }, 15000);
     }
   };
 
@@ -78,8 +78,8 @@ const ListeningTest = () => {
       setShouldPlayAudio(false);
       setCurrentQuestionIndex(0);
       setCurrentAudioIndex(0);
-      setPartTimeLeft(15);
-      setQuestionTimeLeft(30);
+      setPartTimeLeft(5);
+      setQuestionTimeLeft(15);
 
       let partInterval: NodeJS.Timeout;
       let questionInterval: NodeJS.Timeout;
@@ -106,8 +106,8 @@ const ListeningTest = () => {
           setIsQuestionGlowing(false);
           setShouldPlayAudio(true);
           clearInterval(questionInterval);
-        }, 30000);
-      }, 15000);
+        }, 15000);
+      }, 5000);
 
       return () => {
         clearInterval(partInterval);
@@ -146,8 +146,8 @@ const ListeningTest = () => {
     setIsPartGlowing(false);
     setIsQuestionGlowing(false);
     setShouldPlayAudio(false);
-    setPartTimeLeft(15);
-    setQuestionTimeLeft(30);
+    setPartTimeLeft(5);
+    setQuestionTimeLeft(15);
   };
 
   const handlePartChange = (newPart: number) => {
@@ -182,7 +182,7 @@ const ListeningTest = () => {
           <h3 className="text-xl font-bold mb-2">{currentPartData.title}</h3>
           <p className="text-gray-600 mb-4">{currentPartData.description}</p>
           <div className="flex items-center justify-between text-sm text-gray-500">
-            <span>Part Instructions</span>
+            <span>Please read all the questions below carefully. The audio will begin playing automatically once the timer expires.</span>
             <span>Questions: {currentPartData.questions_count}</span>
           </div>
         </div>
