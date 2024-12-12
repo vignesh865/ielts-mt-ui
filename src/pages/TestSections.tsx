@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Headphones, BookOpen, PenLine, Mic } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import TestSection from '../components/TestSection';
@@ -24,6 +24,8 @@ function TestSections() {
   const [showSubmitModal, setShowSubmitModal] = React.useState(false);
   const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [submitError, setSubmitError] = React.useState<string>('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
 
   const { data: testDetails, status } = useQuery<TestDetails>({
     queryKey: ['test', testId],
@@ -100,7 +102,7 @@ function TestSections() {
 
       const scoreData = await submitTest(testId, answers);
       setSubmitStatus('success');
-      
+
       // Clear test data from localStorage
       ['listening', 'reading', 'writing', 'speaking', 'completed'].forEach(key => {
         localStorage.removeItem(`test_${testId}_${key}`);
@@ -159,40 +161,44 @@ function TestSections() {
             <ArrowLeft className="w-5 h-5" />
             Back to Tests
           </button>
+          <div className="mx-auto bg-white rounded-xl p-8 ">
+            {/* fixed width container for sections */}
 
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                {testDetails?.test_name}
-              </h1>
-              <p className="text-gray-600 mt-1">
-                {testDetails?.test_type} Test
-              </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
+              {sections.map((section) => (
+                <TestSection
+                  key={section.id}
+                  title={section.title}
+                  icon={section.icon}
+                  duration={section.duration}
+                  description={section.description}
+                  isActive={(searchParams.get("lastActiveSection") || 'listening') === section.id}
+                  isDisabled={
+                    !section.enabled || completedSections.includes(section.id)
+                  }
+                  onClick={() => handleSectionClick(section.id, testDetails)}
+                />
+              ))}
             </div>
-            <button
-              onClick={handleSubmitTest}
-              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-            >
-              Submit Test
-            </button>
+
+            {/* Updated note and button container with better styling */}
+            <div className="mt-8 text-center">
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                <p className="text-sm text-gray-600">
+                  Note: You can submit individual sections to get them evaluated separately.
+                </p>
+              </div>
+              <div className="mt-8">
+                <button
+                  onClick={handleSubmitTest}
+                  className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                >
+                  Submit Test
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {sections.map((section) => (
-              <TestSection
-                key={section.id}
-                title={section.title}
-                icon={section.icon}
-                duration={section.duration}
-                description={section.description}
-                isActive={activeSection === section.id}
-                isDisabled={
-                  !section.enabled || completedSections.includes(section.id)
-                }
-                onClick={() => handleSectionClick(section.id, testDetails)}
-              />
-            ))}
-          </div>
         </div>
       </div>
 

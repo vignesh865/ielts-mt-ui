@@ -23,7 +23,7 @@ const TestSection: React.FC<TestSectionProps> = ({
   return (
     <div
       onClick={isDisabled ? undefined : onClick}
-      className={`p-6 rounded-xl transition-all ${
+      className={`p-6 rounded-xl transition-all gap-2 shadow-lg ${
         isDisabled
           ? 'bg-gray-100 opacity-50 cursor-not-allowed'
           : isActive

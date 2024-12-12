@@ -27,6 +27,7 @@ const TestLayout: React.FC<TestLayoutProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const testId = location.pathname.split('/')[2];
+  const lastActiveSection = location.pathname.split('/')[3];
   const [showSubmitModal, setShowSubmitModal] = React.useState(false);
 
   const handleSubmit = () => {
@@ -43,7 +44,7 @@ const TestLayout: React.FC<TestLayoutProps> = ({
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-4">
               <button
-                onClick={() => navigate(`/test/${testId}/sections`)}
+                onClick={() => navigate(`/test/${testId}/sections?lastActiveSection=${lastActiveSection}`)}
                 className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
               >
                 <ArrowLeft className="w-4 h-4" />
