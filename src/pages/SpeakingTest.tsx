@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrowLeft, ArrowRight, Play } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import { parts } from '../data/speakingParts';
 import SpeakingDiscussion from '../components/speaking/SpeakingDiscussion';
 import SpeakingLongTurn from '../components/speaking/SpeakingLongTurn';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { blobToBase64 } from '../utils/blobUtils';
 
 const SpeakingTest = () => {
+  const navigate = useNavigate();
   const [currentPart, setCurrentPart] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [answers, setAnswers] = useState<Record<string, Blob[]>>({});
@@ -130,6 +131,22 @@ const SpeakingTest = () => {
             className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
           >
             Next Part <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="flex justify-between mt-6">
+          <button
+            onClick={() => setCurrentPart((prev) => Math.max(1, prev - 1))}
+            disabled={currentPart === 1}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
+          >
+            <ArrowLeft className="w-4 h-4" /> Previous Part
+          </button>
+          <button
+            onClick={currentPart === 3 ? () => navigate(`/test/${testId}/sections?lastActiveSection=speaking`) : () => setCurrentPart((prev) => Math.min(3, prev + 1))}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg"
+          >
+            {currentPart === 3 ? 'Go to sections' : 'Next Part'} <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>

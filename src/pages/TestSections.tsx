@@ -185,7 +185,7 @@ function TestSections() {
             <div className="mt-8 text-center">
               <div className="mt-4 p-4 bg-gray-50 rounded-lg">
                 <p className="text-sm text-gray-600">
-                  Note: You can submit individual sections to get them evaluated separately.
+                  Note: Answers are saved automatically. You can submit individual sections to get them evaluated separately.
                 </p>
               </div>
               <div className="mt-8">

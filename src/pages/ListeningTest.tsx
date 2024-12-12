@@ -4,9 +4,11 @@ import TestLayout from '../components/TestLayout';
 import QuestionRenderer from '../components/questions/QuestionRenderer';
 import AudioPlayer from '../components/AudioPlayer';
 import type { BaseQuestion } from '../components/questions/types';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const ListeningTest = () => {
+  const navigate = useNavigate();
+
   const [currentPart, setCurrentPart] = useState(1);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isPartGlowing, setIsPartGlowing] = useState(false);
@@ -25,7 +27,7 @@ const ListeningTest = () => {
 
   const [partTimeLeft, setPartTimeLeft] = useState<number>(5);
   const [questionTimeLeft, setQuestionTimeLeft] = useState<number>(15);
-  
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const intervalRef = useRef<NodeJS.Timeout>();
 
@@ -48,7 +50,7 @@ const ListeningTest = () => {
       setCurrentQuestionIndex(prev => prev + 1);
       setIsQuestionGlowing(true);
       setQuestionTimeLeft(15); // Reset timer for new question
-      
+
       // Start new question timer
       const questionInterval = setInterval(() => {
         setQuestionTimeLeft((prev) => Math.max(0, prev - 1));
@@ -86,7 +88,7 @@ const ListeningTest = () => {
 
       // Start sequence
       setIsPartGlowing(true);
-      
+
       // Part timer
       partInterval = setInterval(() => {
         setPartTimeLeft((prev) => Math.max(0, prev - 1));
@@ -96,7 +98,7 @@ const ListeningTest = () => {
         setIsPartGlowing(false);
         setIsQuestionGlowing(true);
         clearInterval(partInterval);
-        
+
         // Question timer
         questionInterval = setInterval(() => {
           setQuestionTimeLeft((prev) => Math.max(0, prev - 1));
@@ -171,14 +173,13 @@ const ListeningTest = () => {
           autoPlay={shouldPlayAudio}
         />
 
-<div className={`bg-white p-6 rounded-xl shadow-sm transition-all duration-300 relative ${
-      isPartGlowing ? 'ring-2 ring-indigo-500 ring-opacity-50' : ''
-    }`}>
-      {isPartGlowing && (
-        <div className="absolute top-2 right-2 text-sm text-gray-600">
-          Read {partTimeLeft}s
-        </div>
-      )}
+        <div className={`bg-white p-6 rounded-xl shadow-sm transition-all duration-300 relative ${isPartGlowing ? 'ring-2 ring-indigo-500 ring-opacity-50' : ''
+          }`}>
+          {isPartGlowing && (
+            <div className="absolute top-2 right-2 text-sm text-gray-600">
+              Read {partTimeLeft}s
+            </div>
+          )}
           <h3 className="text-xl font-bold mb-2">{currentPartData.title}</h3>
           <p className="text-gray-600 mb-4">{currentPartData.description}</p>
           <div className="flex items-center justify-between text-sm text-gray-500">
@@ -216,11 +217,11 @@ const ListeningTest = () => {
             <ArrowLeft className="w-4 h-4" /> Previous Part
           </button>
           <button
-            onClick={() => handlePartChange(Math.min(4, currentPart + 1))}
-            disabled={currentPart === 4}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
+            onClick={currentPart === 4 ? () => navigate(`/test/${testId}/sections?lastActiveSection=listening`) : () => handlePartChange(Math.min(4, currentPart + 1))}
+            // disabled={currentPart === 4}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg"
           >
-            Next Part <ArrowRight className="w-4 h-4" />
+            {currentPart === 4 ? 'Go to sections' : 'Next Part'} <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>

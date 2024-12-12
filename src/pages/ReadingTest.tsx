@@ -3,11 +3,12 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import QuestionRenderer from '../components/questions/QuestionRenderer';
 import type { BaseQuestion } from '../components/questions/types';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'
 
 const ReadingTest = () => {
+  const navigate = useNavigate();
   const [currentPart, setCurrentPart] = useState(1);
   const location = useLocation();
   const testId = location.state?.testId;
@@ -79,21 +80,20 @@ const ReadingTest = () => {
             ))}
           </div>
         </div>
-
         <div className="flex justify-between mt-6">
           <button
             onClick={() => setCurrentPart((prev) => Math.max(1, prev - 1))}
             disabled={currentPart === 1}
             className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
           >
-            <ArrowLeft className="w-4 h-4" /> Previous Passage
+            <ArrowLeft className="w-4 h-4" /> Previous Part
           </button>
           <button
-            onClick={() => setCurrentPart((prev) => Math.min(3, prev + 1))}
-            disabled={currentPart === 3}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
+            onClick={currentPart === 3 ? () => navigate(`/test/${testId}/sections?lastActiveSection=reading`) : () => setCurrentPart((prev) => Math.min(3, prev + 1))}
+            // disabled={currentPart === 4}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg"
           >
-            Next Passage <ArrowRight className="w-4 h-4" />
+            {currentPart === 3 ? 'Go to sections' : 'Next Part'} <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import LetterWriting from '../components/writing/LetterWriting';
 import EssayWriting from '../components/writing/EssayWriting';
 
 const WritingTest = () => {
+  const navigate= useNavigate();
   const [currentTask, setCurrentTask] = useState(1);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const location = useLocation();
@@ -74,14 +75,13 @@ const WritingTest = () => {
             disabled={currentTask === 1}
             className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
           >
-            <ArrowLeft className="w-4 h-4" /> Previous Task
+            <ArrowLeft className="w-4 h-4" /> Previous Part
           </button>
           <button
-            onClick={() => setCurrentTask((prev) => Math.min(2, prev + 1))}
-            disabled={currentTask === 2}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
+            onClick={currentTask === 2 ? () => navigate(`/test/${testId}/sections?lastActiveSection=writing`) : () => setCurrentTask((prev) => Math.min(2, prev + 1))}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg"
           >
-            Next Task <ArrowRight className="w-4 h-4" />
+            {currentTask === 2 ? 'Go to sections' : 'Next Part'} <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>
