@@ -6,6 +6,7 @@ import { GraduationCap, Users, Infinity, Brain, MessageSquare, Sparkles } from '
 import LoadingState from '../components/LoadingState';
 import TestCard from '../components/TestCard';
 import type { Test } from '../types/test';
+import { useRef } from 'react';
 
 const fetchTests = async ({
   pageParam = 1,
@@ -66,6 +67,7 @@ const features = [
 ];
 
 function Home() {
+  const testingRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { ref, inView } = useInView();
 
@@ -129,7 +131,7 @@ function Home() {
             className="w-full h-full object-cover"
           />
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-8">
@@ -139,7 +141,9 @@ function Home() {
               Practice with our comprehensive test platform designed to help you achieve your target score.
             </p>
             <div className="mt-10">
-              <button className="px-8 py-4 bg-white text-indigo-600 rounded-full font-semibold hover:bg-indigo-50 transition-colors">
+              <button
+                onClick={() => testingRef.current?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-8 py-4 bg-white text-indigo-600 rounded-full font-semibold hover:bg-indigo-50 transition-colors">
                 Start Free Practice
               </button>
             </div>
@@ -164,7 +168,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12">
+      <div ref={testingRef} className="container mx-auto px-4 py-12">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100">
