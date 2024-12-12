@@ -126,23 +126,6 @@ const SpeakingTest = () => {
             <ArrowLeft className="w-4 h-4" /> Previous Part
           </button>
           <button
-            onClick={() => setCurrentPart((prev) => Math.min(3, prev + 1))}
-            disabled={currentPart === 3}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
-          >
-            Next Part <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="flex justify-between mt-6">
-          <button
-            onClick={() => setCurrentPart((prev) => Math.max(1, prev - 1))}
-            disabled={currentPart === 1}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
-          >
-            <ArrowLeft className="w-4 h-4" /> Previous Part
-          </button>
-          <button
             onClick={currentPart === 3 ? () => navigate(`/test/${testId}/sections?lastActiveSection=speaking`) : () => setCurrentPart((prev) => Math.min(3, prev + 1))}
             className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg"
           >
