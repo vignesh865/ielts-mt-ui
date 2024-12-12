@@ -58,7 +58,7 @@ const ReadingTest = () => {
             </div>
           </div>
 
-          <div className="space-y-2 h-[calc(200vh-300px)] overflow-y-auto pr-2">
+          <div className="space-y-2 h-[calc(200vh-300px)] overflow-y-auto">
             {currentPartData.data.map((question: BaseQuestion, index: number) => (
               <div
                 key={question[1].id}
