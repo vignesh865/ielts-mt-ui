@@ -226,6 +226,16 @@ function Home() {
           )}
         </div>
       </div>
+      <footer className="bg-gray-800 text-white text-center py-4">
+  <div className="container mx-auto">
+    <p>&copy; {new Date().getFullYear()} TensorTechSolutions. All Rights Reserved.</p>
+    <address className="text-sm not-italic">
+      <a href="mailto:ceo@tensortechsolutions.org" className="text-blue-400 hover:underline">
+         Mail Support
+      </a>
+    </address>
+  </div>
+</footer>
     </div>
   );
 }
