@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Star } from 'lucide-react'; // Assuming you're using lucide-react for icons
+import { submitFeedback } from '../services/api';
 
 const FeedbackModal = ({ isOpen, onClose }) => {
   const [feedbackData, setFeedbackData] = useState({
@@ -26,19 +27,12 @@ const FeedbackModal = ({ isOpen, onClose }) => {
       [name]: value,
     }));
   };
-  const API_HOST = import.meta.env.VITE_API_HOST;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Fire and forget the API call
-    fetch(`${API_HOST}/user/feedback`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(feedbackData),
-    }).catch((error) => {
+    await submitFeedback(feedbackData).catch((error) => {
       // Log the error but don't block the modal from closing
       console.error('Error submitting feedback:', error);
     });
