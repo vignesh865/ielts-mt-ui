@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
@@ -7,6 +7,9 @@ import LoadingState from '../components/LoadingState';
 import TestCard from '../components/TestCard';
 import type { Test } from '../types/test';
 import { useRef } from 'react';
+import WelcomeModal from '../components/WelcomeModal';
+import Feedback from '../components/Feedback';
+import FeedbackModal from '../components/Feedback';
 
 const fetchTests = async ({
   pageParam = 1,
@@ -67,9 +70,48 @@ const features = [
 ];
 
 function Home() {
+  const [isFirstVisit, setIsFirstVisit] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const openFeedbackModal = () => setIsFeedbackModalOpen(true);
+  const closeFeedbackModal = () => setIsFeedbackModalOpen(false);
+
   const testingRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { ref, inView } = useInView();
+
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('hasVisited');
+    if (hasVisited != 'true') {
+      setIsFirstVisit(true);
+    }else{
+      setIsFirstVisit(false);
+    }
+
+  }, []);
+
+  useEffect(() => {
+    if (isFirstVisit && !showModal) {
+      const handleScroll = () => {
+        if (window.scrollY > 100) {
+          setShowModal(true);
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [isFirstVisit, showModal]);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    localStorage.setItem('hasVisited', 'true');
+    setIsFirstVisit(false);
+  };
+
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery({
@@ -122,6 +164,7 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
+      {showModal && isFirstVisit && <WelcomeModal onClose={handleCloseModal} />}
       <div className="relative overflow-hidden bg-indigo-600 text-white">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-90" />
@@ -225,17 +268,25 @@ function Home() {
             </p>
           )}
         </div>
+        <button
+          onClick={openFeedbackModal}
+          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+        >
+          Provide Feedback
+        </button>
+
+        <FeedbackModal isOpen={isFeedbackModalOpen} onClose={closeFeedbackModal} />
       </div>
       <footer className="bg-gray-800 text-white text-center py-4">
-  <div className="container mx-auto">
-    <p>&copy; {new Date().getFullYear()} TensorTechSolutions. All Rights Reserved.</p>
-    <address className="text-sm not-italic">
-      <a href="mailto:support@ieltsmock.in" className="text-blue-400 hover:underline">
-         Mail Support
-      </a>
-    </address>
-  </div>
-</footer>
+        <div className="container mx-auto">
+          <p>&copy; {new Date().getFullYear()} TensorTechSolutions. All Rights Reserved.</p>
+          <address className="text-sm not-italic">
+            <a href="mailto:support@ieltsmock.in" className="text-blue-400 hover:underline">
+              Mail Support
+            </a>
+          </address>
+        </div>
+      </footer>
     </div>
   );
 }

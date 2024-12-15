@@ -20,8 +20,8 @@ const TestCard: React.FC<TestCardProps> = ({ test, onClick }) => {
       className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer border border-gray-100 hover:border-indigo-100 h-full"
     >
       <div className="p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <h3 className="text-lg font-semibold text-gray-900">
+        <div className="flex items-center m-2">
+          <h3 className="text-lg font-semibold text-center text-gray-900">
             {test.test_name}
           </h3>
           {/* <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getTypeColor(test.test_type)}`}>
@@ -29,11 +29,11 @@ const TestCard: React.FC<TestCardProps> = ({ test, onClick }) => {
           </span> */}
         </div>
 
-        <div className="flex items-center justify-between text-sm text-gray-500">
+        {/* <div className="flex items-center justify-between text-sm text-gray-500">
           <div className="flex items-center gap-1">
             <Clock className="w-4 h-4" />
             <span>170m</span>
-          </div>
+          </div> */}
           {/* <span className={`px-2 py-0.5 rounded-full text-xs ${
             test.difficulty === 'Easy' ? 'bg-green-100 text-green-800' :
             test.difficulty === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
@@ -41,7 +41,7 @@ const TestCard: React.FC<TestCardProps> = ({ test, onClick }) => {
           }`}>
             {test.difficulty}
           </span> */}
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );
