@@ -26,28 +26,25 @@ const FeedbackModal = ({ isOpen, onClose }) => {
       [name]: value,
     }));
   };
+  const API_HOST = import.meta.env.VITE_API_HOST;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('/api/submitFeedback', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(feedbackData),
-      });
 
-      if (response.ok) {
-        alert('Feedback submitted successfully!');
-        onClose();
-      } else {
-        alert('Failed to submit feedback. Please try again.');
-      }
-    } catch (error) {
+    // Fire and forget the API call
+    fetch(`${API_HOST}/user/feedback`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(feedbackData),
+    }).catch((error) => {
+      // Log the error but don't block the modal from closing
       console.error('Error submitting feedback:', error);
-      alert('An error occurred while submitting feedback. Please try again.');
-    }
+    });
+
+    // Close the modal immediately
+    onClose();
   };
 
   if (!isOpen) return null;
