@@ -13,6 +13,8 @@ const FeedbackModal = ({ isOpen, onClose }) => {
     thoughts: '',
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false); // Loading state
+
   const handleStarClick = (metric, value) => {
     setFeedbackData((prevData) => ({
       ...prevData,
@@ -31,14 +33,20 @@ const FeedbackModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Fire and forget the API call
-    await submitFeedback(feedbackData).catch((error) => {
-      // Log the error but don't block the modal from closing
-      console.error('Error submitting feedback:', error);
-    });
+    setIsSubmitting(true); // Set loading state to true
 
-    // Close the modal immediately
-    onClose();
+    try {
+      // Submit feedback to the API
+      await submitFeedback(feedbackData);
+
+      // Close the modal after successful submission
+      onClose();
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      alert('An error occurred while submitting feedback. Please try again.');
+    } finally {
+      setIsSubmitting(false); // Reset loading state
+    }
   };
 
   if (!isOpen) return null;
@@ -204,9 +212,38 @@ const FeedbackModal = ({ isOpen, onClose }) => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              disabled={isSubmitting}
+              className={`px-4 py-2 bg-indigo-600 text-white rounded-lg flex items-center justify-center ${
+                isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-indigo-700'
+              }`}
             >
-              Submit Feedback
+              {isSubmitting ? (
+                <>
+                  <svg
+                    className="animate-spin h-5 w-5 text-white mr-2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Submitting...
+                </>
+              ) : (
+                'Submit Feedback'
+              )}
             </button>
           </div>
         </form>
