@@ -31,6 +31,16 @@ const ListeningTest = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const intervalRef = useRef<NodeJS.Timeout>();
 
+
+  const loadAnswers = () => {
+    const existingAnswers = localStorage.getItem(`test_${testId}_listening`);
+    if (existingAnswers != null) {
+      setAnswers(JSON.parse(existingAnswers));
+    }
+  }
+
+  useEffect(loadAnswers, []);
+    
   const handleAnswer = (questionId: string, answer: any) => {
     const updatedAnswers = {
       ...answers,
@@ -74,6 +84,7 @@ const ListeningTest = () => {
 
   useEffect(() => {
     if (currentPartData) {
+      loadAnswers();
       // Reset states
       setIsPartGlowing(false);
       setIsQuestionGlowing(false);

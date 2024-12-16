@@ -8,14 +8,13 @@ import TestCard from '../components/TestCard';
 import type { Test } from '../types/test';
 import { useRef } from 'react';
 import WelcomeModal from '../components/WelcomeModal';
-import Feedback from '../components/Feedback';
-import FeedbackModal from '../components/Feedback';
+import FeedbackModal from '../components/FeedbackModal';
 
 const fetchTests = async ({
   pageParam = 1,
 }): Promise<{ tests: Test[]; nextPage: number | null }> => {
   const host = import.meta.env.VITE_API_HOST;
-  const pageSize = 12;
+  const pageSize = 30;
   const start = (pageParam - 1) * pageSize;
 
   try {

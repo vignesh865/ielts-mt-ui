@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, Play } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import { parts } from '../data/speakingParts';
@@ -19,6 +19,15 @@ const SpeakingTest = () => {
   const currentPartData = parts[currentPart - 1];
   const speakingData = sectionData?.[`part${currentPart}`];
 
+  const loadAnswers = () => {
+    const existingAnswers = localStorage.getItem(`test_${testId}_speaking`);
+    if (existingAnswers != null) {
+      setAnswers(JSON.parse(existingAnswers));
+    }
+  }
+
+  useEffect(loadAnswers, []);
+  
   const handleAnswer = async (questionId: string, recordings: Blob[]) => {
     const updatedAnswers = {
       ...answers,

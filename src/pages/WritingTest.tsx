@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -14,6 +14,15 @@ const WritingTest = () => {
   const sectionData = location.state?.sectionData;
 
   const currentTaskData = sectionData?.[`part${currentTask}`];
+
+  const loadAnswers = () => {
+    const existingAnswers = localStorage.getItem(`test_${testId}_writing`);
+    if (existingAnswers != null) {
+      setAnswers(JSON.parse(existingAnswers));
+    }
+  }
+
+  useEffect(loadAnswers, []);
 
   const handleAnswerChange = (questionId: string, answer: string) => {
     const updatedAnswers = {

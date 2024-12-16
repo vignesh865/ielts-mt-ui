@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import TestLayout from '../components/TestLayout';
 import QuestionRenderer from '../components/questions/QuestionRenderer';
@@ -17,6 +17,15 @@ const ReadingTest = () => {
   const [answers, setAnswers] = useState<Record<string, any>>({});
 
   const currentPartData = sectionData[`part${currentPart}`];
+
+  const loadAnswers = () => {
+    const existingAnswers = localStorage.getItem(`test_${testId}_reading`);
+    if (existingAnswers != null) {
+      setAnswers(JSON.parse(existingAnswers));
+    }
+  }
+
+  useEffect(loadAnswers, []);
 
   const handleAnswer = (questionId: string, answer: any) => {
     const updatedAnswers = {
