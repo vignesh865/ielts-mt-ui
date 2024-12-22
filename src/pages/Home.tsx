@@ -9,6 +9,7 @@ import type { Test } from '../types/test';
 import { useRef } from 'react';
 import WelcomeModal from '../components/WelcomeModal';
 import FeedbackModal from '../components/FeedbackModal';
+import logo from '../assests/logo.jpeg';
 
 const fetchTests = async ({
   pageParam = 1,
@@ -84,7 +85,7 @@ function Home() {
     const hasVisited = localStorage.getItem('hasVisited');
     if (hasVisited != 'true') {
       setIsFirstVisit(true);
-    }else{
+    } else {
       setIsFirstVisit(false);
     }
 
@@ -173,7 +174,16 @@ function Home() {
             className="w-full h-full object-cover"
           />
         </div>
-
+        <div className="relative max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex items-center justify-between">
+          <a href="/" className="flex items-center">
+            <img
+              src={logo}
+              alt="IELTSMock.in Logo"
+              className="h-10 w-auto"
+            />
+            <span className="ml-3 text-2xl font-bold">IELTSMock.in</span>
+          </a>
+        </div>
         <div className="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-8">
