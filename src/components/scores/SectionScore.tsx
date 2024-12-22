@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp, Check, X } from 'lucide-react';
 
 interface Answer {
   answer: string;
+  user_answer: string;
   correct: boolean;
 }
 
@@ -99,20 +100,31 @@ const SectionScore: React.FC<SectionScoreProps> = ({ title, sectionData }) => {
                     {expandedTask === task.question_id && (
                       <div className="p-4 bg-gray-50">
                         <h5 className="font-medium mb-2">Answers:</h5>
-                        <div className="space-y-2">
-                          {task.answers.map((answer, answerIndex) => (
-                            <div
-                              key={answerIndex}
-                              className="flex items-center justify-between p-2 bg-white rounded"
-                            >
-                              <span>{answer.answer}</span>
-                              {answer.correct ? (
-                                <Check className="w-5 h-5 text-green-500" />
-                              ) : (
-                                <X className="w-5 h-5 text-red-500" />
-                              )}
-                            </div>
-                          ))}
+                        <div className="overflow-x-auto">
+                          <table className="min-w-full border-collapse border border-gray-200">
+                            <thead>
+                              <tr>
+                                <th className="border border-gray-300 p-2">Answer</th>
+                                <th className="border border-gray-300 p-2">Your Answer</th>
+                                <th className="border border-gray-300 p-2">Correct</th>
+                              </tr>
+                            </thead>
+                            <tbody className="space-y-2">
+                              {task.answers.map((answer, answerIndex) => (
+                                <tr key={answerIndex} className="border border-gray-300">
+                                  <td className="border border-gray-300 p-2">{answer.answer}</td>
+                                  <td className="border border-gray-300 p-2">{answer.user_answer}</td>
+                                  <td className="border border-gray-300 p-2">
+                                    {answer.correct ? (
+                                      <Check className="w-5 h-5 text-green-500" />
+                                    ) : (
+                                      <X className="w-5 h-5 text-red-500" />
+                                    )}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
                       </div>
                     )}

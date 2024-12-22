@@ -110,15 +110,6 @@ const ScoreScreen = () => {
               partScores={scoreData.writing.part_scores}
             />
           )}
-          {/* {scoreData.writing && (
-            <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Writing Evaluation</h2>
-              <p className="text-gray-600">
-                Your Writing responses are being evaluated by our assessment system.
-                Results will be available soon.
-              </p>
-            </div>
-          )} */}
         </div>
       </div>
     </div>
