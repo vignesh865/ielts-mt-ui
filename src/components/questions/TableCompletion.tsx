@@ -8,8 +8,12 @@ interface Props {
 }
 
 const TableCompletion: React.FC<Props> = ({ question, onAnswer, answers }) => {
+  const indexMap: { [key: string]: number } = {};
+  let blankCounter = 0; // External variable to track blanks
+
+
   const handleAnswerChange = (rowIndex: number, cellIndex: number, value: string) => {
-    const flatIndex = rowIndex * question.table_completion.column_headers.length + cellIndex;
+    const flatIndex = getAnswerIndex(rowIndex, cellIndex);
     const newAnswers = [...answers];
     newAnswers[flatIndex] = value;
     
@@ -19,8 +23,12 @@ const TableCompletion: React.FC<Props> = ({ question, onAnswer, answers }) => {
     });
   };
 
-  const getFlatIndex = (rowIndex: number, cellIndex: number) => {
-    return rowIndex * question.table_completion.column_headers.length + cellIndex;
+  const getAnswerIndex = (rowIndex: number, cellIndex: number) => {
+    return indexMap[getAnswerIndexKey(rowIndex, cellIndex)];
+  };
+
+  const getAnswerIndexKey = (rowIndex: number, cellIndex: number) => {
+    return `${rowIndex}-${cellIndex}`;
   };
 
   return (
@@ -45,16 +53,22 @@ const TableCompletion: React.FC<Props> = ({ question, onAnswer, answers }) => {
               {row.cells.map((cell, cellIndex) => {
                 const parts = cell.text.split('$$$$');
                 const hasBlank = parts.length > 1;
-                const flatIndex = getFlatIndex(rowIndex, cellIndex);
+
+                if (hasBlank) {
+                  indexMap[getAnswerIndexKey(rowIndex, cellIndex)] = blankCounter++;
+                }
+                const flatIndex = getAnswerIndex(rowIndex, cellIndex);
 
                 return (
                   <td key={cellIndex} className="p-4 border border-gray-200">
                     {hasBlank ? (
                       <div className="flex items-center gap-2">
                         {parts.map((part, partIndex) => (
+                          
                           <React.Fragment key={partIndex}>
                             <span>{part}</span>
                             {partIndex < parts.length - 1 && (
+                              
                               <input
                                 type="text"
                                 value={answers[flatIndex] || ''}
