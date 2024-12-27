@@ -10,6 +10,7 @@ import { useRef } from 'react';
 import WelcomeModal from '../components/WelcomeModal';
 import FeedbackModal from '../components/FeedbackModal';
 import logo from '../assests/logo.jpeg';
+import { SignInButton, UserButton, useUser } from '@clerk/clerk-react';
 
 const fetchTests = async ({
   pageParam = 1,
@@ -72,6 +73,7 @@ const features = [
 function Home() {
   const [isFirstVisit, setIsFirstVisit] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const { isSignedIn, user } = useUser();
 
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const openFeedbackModal = () => setIsFeedbackModalOpen(true);
@@ -183,6 +185,9 @@ function Home() {
             />
             <span className="ml-3 text-2xl font-bold">IELTSMock.in</span>
           </a>
+          <div className="ml-auto"> {/* Added this div for right alignment */}
+            {isSignedIn ? <UserButton /> : <SignInButton />}
+          </div>
         </div>
         <div className="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8">
           <div className="text-center">
