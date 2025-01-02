@@ -51,3 +51,17 @@ export const submitFeedback = async (feedbackData: any) => {
   alert('Feedback submitted successfully!');
   return response.json();
 };
+
+export const fetchBlog = async (postId: string): Promise<string> => {
+  const response = await fetch(`https://ieltsblog.s3.us-east-1.amazonaws.com/${postId}.md`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'anyvalue',
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Failed to fetch post');
+  }
+  return response.text();
+}; 

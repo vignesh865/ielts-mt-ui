@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
-import { GraduationCap, Users, Infinity, Brain, MessageSquare, Sparkles } from 'lucide-react';
+import { GraduationCap, Users, Infinity, Brain, MessageSquare, Sparkles, BookOpen } from 'lucide-react';
 import LoadingState from '../components/LoadingState';
 import TestCard from '../components/TestCard';
 import type { Test } from '../types/test';
@@ -185,7 +185,14 @@ function Home() {
             />
             <span className="ml-3 text-2xl font-bold">IELTSMock.in</span>
           </a>
-          <div className="ml-auto"> {/* Added this div for right alignment */}
+          <div className="flex items-center gap-4">
+            <Link 
+              to="/blog"
+              className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+            >
+              <BookOpen className="w-4 h-4" />
+              <span>Blog</span>
+            </Link>
             {isSignedIn ? <UserButton /> : <SignInButton />}
           </div>
         </div>

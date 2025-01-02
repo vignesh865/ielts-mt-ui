@@ -7,12 +7,16 @@ import WritingTest from './pages/WritingTest';
 import SpeakingTest from './pages/SpeakingTest';
 import ScoreScreen from './pages/ScoreScreen';
 import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/test/:testId/sections" element={
           <>
             <SignedIn>
