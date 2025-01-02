@@ -1,14 +1,9 @@
-import { fetchBlog } from "../services/api";
+import { fetchBlog, fetchBlogMetadata } from "../services/api";
 import { BlogPost, BlogMetadata } from "../types/blog";
 
 export const getBlogPosts = async (): Promise<BlogMetadata[]> => {
-  const blogModules = import.meta.glob('/src/blog/*/metadata.json');
-  const posts: BlogMetadata[] = [];
-
-  for (const path in blogModules) {
-    const metadata = await blogModules[path]() as { default: BlogMetadata };
-    posts.push(metadata.default);
-  }
+//   const blogModules = import.meta.glob('/src/blog/*/metadata.json');
+  const posts: BlogMetadata[] = await fetchBlogMetadata()
 
   // Sort by published date, newest first
   return posts.sort((a, b) => 
@@ -18,11 +13,17 @@ export const getBlogPosts = async (): Promise<BlogMetadata[]> => {
 
 export const getBlogPost = async (slug: string): Promise<BlogPost | null> => {
   try {
-    const metadata = await import(`/src/blog/${slug}/metadata.json`);
+
+    const allMetadata: BlogMetadata[] = await fetchBlogMetadata()
+    const metadata = allMetadata.find(metadata => metadata.slug == slug)
+    if(metadata == null){
+        throw Error("Invalid Post");
+    }
+    
     const content = await fetchBlog(slug);
     
     return {
-      ...metadata.default,
+      ...metadata,
       content: content
     };
   } catch (error) {
