@@ -2,7 +2,6 @@ import { fetchBlog, fetchBlogMetadata } from "../services/api";
 import { BlogPost, BlogMetadata } from "../types/blog";
 
 export const getBlogPosts = async (): Promise<BlogMetadata[]> => {
-//   const blogModules = import.meta.glob('/src/blog/*/metadata.json');
   const posts: BlogMetadata[] = await fetchBlogMetadata()
 
   // Sort by published date, newest first
@@ -19,7 +18,7 @@ export const getBlogPost = async (slug: string): Promise<BlogPost | null> => {
     if(metadata == null){
         throw Error("Invalid Post");
     }
-    
+
     const content = await fetchBlog(slug);
     
     return {

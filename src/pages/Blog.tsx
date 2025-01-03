@@ -1,13 +1,14 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { Book, Clock, ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Book, Clock, ChevronRight, ArrowLeft } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import LoadingState from '../components/LoadingState';
 import { getBlogPosts } from '../utils/blogUtils';
 import type { BlogPost } from '../types/blog';
 
 const Blog = () => {
+  const navigate = useNavigate();
   const { data: posts, status } = useQuery<BlogPost[]>({
     queryKey: ['blog-posts'],
     queryFn: getBlogPosts
@@ -15,7 +16,7 @@ const Blog = () => {
 
   if (status === 'pending') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <LoadingState message="Loading blog posts..." />
       </div>
     );
@@ -23,7 +24,7 @@ const Blog = () => {
 
   if (status === 'error') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Blog</h2>
           <p className="text-red-500">Failed to load blog posts. Please try again later.</p>
@@ -33,57 +34,62 @@ const Blog = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">IELTS Blog</h1>
-            <p className="text-xl text-gray-600">Tips, strategies, and insights to help you ace your IELTS exam</p>
+    <div className="min-h-screen bg-white">
+      <header className="border-b">
+        <div className="max-w-screen-xl mx-auto px-4 py-8">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => navigate('/')}
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              Back to Tests
+            </button>
+            <h1 className="text-xl font-serif">IELTS Insights</h1>
           </div>
+        </div>
+      </header>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <main className="max-w-screen-xl mx-auto px-4 py-12">
+        <div className="max-w-3xl mx-auto">
+          <div className="space-y-16">
             {posts?.map((post) => (
-              <Link
-                key={post.id}
-                to={`/blog/${post.slug}`}
-                className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden group"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={post.coverImage}
-                    alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
-                    <div className="flex items-center gap-1">
-                      <Book className="w-4 h-4" />
-                      <span>{post.author}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      <span>{post.readTime} min read</span>
+              <article key={post.id} className="group">
+                <Link to={`/blog/${post.slug}`} className="block">
+                  <div className="aspect-[16/9] mb-8 overflow-hidden">
+                    <img
+                      src={post.coverImage}
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="space-y-4">
+                    <h2 className="text-3xl font-serif group-hover:text-gray-600 transition-colors">
+                      {post.title}
+                    </h2>
+                    <p className="text-gray-600 text-lg leading-relaxed">
+                      {post.excerpt}
+                    </p>
+                    <div className="flex items-center gap-6 text-sm text-gray-500">
+                      <div className="flex items-center gap-2">
+                        <Book className="w-4 h-4" />
+                        <span>{post.author}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4" />
+                        <span>{post.readTime} min read</span>
+                      </div>
+                      <time>
+                        {format(new Date(post.publishedAt), 'MMMM d, yyyy')}
+                      </time>
                     </div>
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
-                    {post.title}
-                  </h2>
-                  <p className="text-gray-600 mb-4 line-clamp-2">{post.excerpt}</p>
-                  <div className="flex items-center text-indigo-600 font-medium">
-                    Read more <ChevronRight className="w-4 h-4 ml-1" />
-                  </div>
-                </div>
-                <div className="px-6 pb-4">
-                  <time className="text-sm text-gray-500">
-                    {format(new Date(post.publishedAt), 'MMMM d, yyyy')}
-                  </time>
-                </div>
-              </Link>
+                </Link>
+              </article>
             ))}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
