@@ -17,7 +17,7 @@ const BlogPost = () => {
 
   if (status === 'pending') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <LoadingState message="Loading blog post..." />
       </div>
     );
@@ -25,16 +25,16 @@ const BlogPost = () => {
 
   if (status === 'error' || !post) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Post</h2>
           <p className="text-red-500 mb-4">Failed to load blog post. Please try again later.</p>
           <Link
             to="/blog"
-            className="inline-flex items-center text-indigo-600 hover:text-indigo-700"
+            className="inline-flex items-center text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Blog
+            Other Blogs
           </Link>
         </div>
       </div>
@@ -42,42 +42,50 @@ const BlogPost = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <Link
-            to="/blog"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-8"
-          >
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Back to Blog
-          </Link>
+    <div className="min-h-screen bg-white">
+      <header className="border-b">
+        <div className="max-w-screen-xl mx-auto px-4 py-8">
+          <div className="flex items-center justify-between">
+            <Link
+              to="/blog"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              Back to Blog
+            </Link>
+            <h1 className="text-xl font-serif">IELTS Insights</h1>
+          </div>
+        </div>
+      </header>
 
-          <article className="bg-white rounded-xl shadow-sm overflow-hidden">
-            <div className="relative h-96">
+      <main className="max-w-screen-xl mx-auto px-4 py-12">
+        <div className="max-w-3xl mx-auto">
+          <article className="group">
+            <div className="aspect-[16/9] mb-8 overflow-hidden">
               <img
                 src={post.coverImage}
                 alt={post.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             </div>
 
-            <div className="p-8">
-              <h1 className="text-4xl font-bold text-gray-900 mb-6">{post.title}</h1>
+            <div className="space-y-4">
+              <h1 className="text-3xl font-serif group-hover:text-gray-600 transition-colors">
+                {post.title}
+              </h1>
 
-              <div className="flex flex-wrap items-center gap-6 text-gray-500 mb-8 pb-8 border-b">
+              <div className="flex items-center gap-6 text-sm text-gray-500">
                 <div className="flex items-center gap-2">
-                  <Book className="w-5 h-5" />
+                  <Book className="w-4 h-4" />
                   <span>{post.author}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5" />
-                  <time>{format(new Date(post.publishedAt), 'MMMM d, yyyy')}</time>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5" />
+                  <Clock className="w-4 h-4" />
                   <span>{post.readTime} min read</span>
                 </div>
+                <time>
+                  {format(new Date(post.publishedAt), 'MMMM d, yyyy')}
+                </time>
               </div>
 
               <div className="prose max-w-none">
@@ -86,7 +94,7 @@ const BlogPost = () => {
             </div>
           </article>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

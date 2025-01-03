@@ -1,7 +1,6 @@
-import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { Book, Clock, ChevronRight, ArrowLeft } from 'lucide-react';
+import { Book, Clock, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import LoadingState from '../components/LoadingState';
 import { getBlogPosts } from '../utils/blogUtils';
@@ -43,7 +42,7 @@ const Blog = () => {
               className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
             >
               <ArrowLeft className="w-5 h-5" />
-              Back to Tests
+              Mock Tests
             </button>
             <h1 className="text-xl font-serif">IELTS Insights</h1>
           </div>
